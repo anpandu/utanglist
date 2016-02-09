@@ -9,7 +9,7 @@ module.exports = {
 
   attributes: {
     
-    id: {
+    user_id: {
       type: 'string',
       required: true,
     },
