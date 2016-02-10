@@ -22,11 +22,18 @@
     "rc": "~0.5.0",
     "sails": "~0.11.0",
     "sails-disk": "~0.10.0",
-    "sails-mongo": "^0.12.0"
+    "sails-mongo": "^0.12.0",
+    "bluebird": "^2.9.30"
+  },
+  "devDependencies": {
+    "chai": "^3.0.0",
+    "mocha": "^2.2.5",
+    "supertest": "^1.0.1"
   },
   "scripts": {
     "debug": "node debug app.js",
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "mocha tests/bootstrap.test.js tests/**/*.js --recursive --no-timeouts"
   },
   "main": "app.js",
   "repository": {
