@@ -2,6 +2,8 @@ var Sails = require('sails'),
 chai  = require('chai'),
 sails
 
+global._ = require('lodash')
+global.Promise = require('bluebird')
 global.request = require('supertest')
 global.should  = chai.should()
 global.assert  = chai.assert

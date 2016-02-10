@@ -23,21 +23,14 @@ module.exports = {
   },
 
   autocomplete: function(req, res) {
-    var user_name = req.param('user_name')
-    User
-      .find({ 
-        where: { user_name: { 'like': user_name+'%' } },
-        sort: 'user_name ASC',
-        limit: 5,
+    Promise.resolve()
+      .then(function () {
+        return req.param('user_name')
       })
-      .then(function(users) {
-        return users.map(function (u) {
-          return { 
-            user_id: u.user_id,
-            user_name: u.user_name,
-          }
-        })
+      .then(function (user_name) {
+        return (_.isUndefined(user_name)) ? res.notFound() : user_name
       })
+      .then(User.getAutocomplete)
       .then(function(users) { return res.send(users) })
       .catch(function () { return res.notFound() })
   },

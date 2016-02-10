@@ -1,6 +1,6 @@
 describe('UserModel', function() {
 
-  describe('#create', function() {
+  describe('basic', function() {
 
     it('should has default original field', function (done) {
       User
@@ -23,7 +23,73 @@ describe('UserModel', function() {
         })
         .catch(done)
     })
+  })
 
+  describe('autocomplete', function() {
+
+    it('should return max 5', function (done) {
+      Promise.resolve()
+        .then(function () { 
+          var names = ['ana', 'anna', 'anni', 'annie', 'andy', 'ann', 'bobo']
+          var proms = names.map(function (n, idx) {
+            return User.create({ user_id:'user_3_'+idx, user_name: n }) 
+          })
+          return Promise.all(proms)
+        })
+        .then(function () { return User.getAutocomplete('a') })
+        .then(function (users) {
+          var answer = ['ana', 'andy', 'ann', 'anna', 'anni']
+          assert(users.length === answer.length)
+          users.forEach(function (user, idx) {
+            assert('user_id' in user, 'user_id field doesn\'t exist' )
+            assert('user_name' in user, 'user_name field doesn\'t exist' )
+            assert(user.user_name === answer[idx], 'user_name doesn\'t match' )
+          })
+        })
+        .then(function () { done() })
+    })
+
+    it('should return array of 4 if match 4, sorted ASC', function (done) {
+      Promise.resolve()
+        .then(function () { return User.getAutocomplete('ann') })
+        .then(function (users) {
+          var answer = ['ann', 'anna', 'anni', 'annie']
+          assert(users.length === answer.length)
+          users.forEach(function (user, idx) {
+            assert('user_id' in user, 'user_id field doesn\'t exist' )
+            assert('user_name' in user, 'user_name field doesn\'t exist' )
+            assert(user.user_name === answer[idx], 'user_name doesn\'t match' )
+          })
+        })
+        .then(function () { done() })
+    })
+
+    it('should return array of 1 if match 1', function (done) {
+      Promise.resolve()
+        .then(function () { return User.getAutocomplete('b') })
+        .then(function (users) {
+          var answer = ['bobo']
+          assert(users.length === answer.length)
+          users.forEach(function (user, idx) {
+            assert('user_id' in user, 'user_id field doesn\'t exist' )
+            assert('user_name' in user, 'user_name field doesn\'t exist' )
+            assert(user.user_name === answer[idx], 'user_name doesn\'t match' )
+          })
+        })
+        .then(function () { done() })
+    })
+
+    it('should return empty array if not found', function (done) {
+      Promise.resolve()
+        .then(function () { return User.getAutocomplete('zxczxc') })
+        .then(function (users) { assert(users.length === 0) })
+        .then(function () { 
+          var names = ['', '', '', '', '', '', '']
+          var proms = names.map(function (n, idx) { return User.destroy({ user_id:'user_3_'+idx })  })
+          return Promise.all(proms)
+        })
+        .then(function () { done() })
+    })
   })
 
 })

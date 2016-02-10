@@ -1,5 +1,3 @@
-var Promise = require('bluebird')
-
 describe('UserController', function() {
 
   var endpoint = '/user'
@@ -100,79 +98,33 @@ describe('UserController', function() {
 
   describe('/autocomplete', function() {
 
-    it('should return users by startsWith char and max 5', function (done) {
-      var _user
+    it('should return users (array)', function (done) {
       Promise.resolve()
-        .then(function () { 
-          var names = ['ana', 'anna', 'anni', 'annie', 'andy', 'ann', 'bobo']
-          var proms = names.map(function (n, idx) {
-            return User.create({ 
-              user_id:'user_3_'+idx,  
-              user_name: n,  
-              display_name: n,  
-              password:'123',  
-              email:'123',  
-              avatar:'123',
-            }) 
-          })
-          return Promise.all(proms)
-        })
         .then(function () {
-          return request(sails.hooks.http.app)
+          request(sails.hooks.http.app)
             .post(endpoint+'/autocomplete')
             .set('Content-Type', 'application/json')
             .send({ user_name:'a' })
             .expect(function(res) {
               var users = res.body
-              var answer = ['ana', 'andy', 'ann', 'anna', 'anni']
-              assert(users.length === answer.length)
-              users.forEach(function (user, idx) {
-                assert('user_id' in user, 'user_id field doesn\'t exist' )
-                assert('user_name' in user, 'user_name field doesn\'t exist' )
-                assert(user.user_name === answer[idx], 'user_name doesn\'t match' )
-              })
+              assert(_.isArray(users))
             })
+            .end(done)
         })
+    })
+
+    it('should 404 if no user_name param', function (done) {
+      Promise.resolve()
         .then(function () {
-          return request(sails.hooks.http.app)
+          request(sails.hooks.http.app)
             .post(endpoint+'/autocomplete')
             .set('Content-Type', 'application/json')
-            .send({ user_name:'ann' })
+            .send({})
             .expect(function(res) {
-              var users = res.body
-              var answer = ['ann', 'anna', 'anni', 'annie']
-              assert(users.length === answer.length)
-              users.forEach(function (user, idx) {
-                assert('user_id' in user, 'user_id field doesn\'t exist' )
-                assert('user_name' in user, 'user_name field doesn\'t exist' )
-                assert(user.user_name === answer[idx], 'user_name doesn\'t match' )
-              })
+              assert(res.status == '404', 'not 404' )
             })
+            .end(done)
         })
-        .then(function () {
-          return request(sails.hooks.http.app)
-            .post(endpoint+'/autocomplete')
-            .set('Content-Type', 'application/json')
-            .send({ user_name:'b' })
-            .expect(function(res) {
-              var users = res.body
-              var answer = ['bobo']
-              assert(users.length === answer.length)
-              users.forEach(function (user, idx) {
-                assert('user_id' in user, 'user_id field doesn\'t exist' )
-                assert('user_name' in user, 'user_name field doesn\'t exist' )
-                assert(user.user_name === answer[idx], 'user_name doesn\'t match' )
-              })
-            })
-        })
-        .then(function () {
-          return request(sails.hooks.http.app)
-            .post(endpoint+'/autocomplete')
-            .set('Content-Type', 'application/json')
-            .send({ user_name:'zxczxc' })
-            .expect(function(res) { assert(res.body.length === 0) })
-        })
-        .then(function () { done() })
     })
 
   })
