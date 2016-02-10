@@ -37,6 +37,7 @@ module.exports.routes = {
   },
 
   'post /user/login': 'UserController.login',
+  'post /user/autocomplete': 'UserController.autocomplete',
 
   /***************************************************************************
   *                                                                          *

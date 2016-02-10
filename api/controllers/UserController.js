@@ -20,7 +20,27 @@ module.exports = {
       .catch(function () {
         return res.notFound()
       })
-  }
+  },
+
+  autocomplete: function(req, res) {
+    var user_name = req.param('user_name')
+    User
+      .find({ 
+        where: { user_name: { 'like': user_name+'%' } },
+        sort: 'user_name ASC',
+        limit: 5,
+      })
+      .then(function(users) {
+        return users.map(function (u) {
+          return { 
+            user_id: u.user_id,
+            user_name: u.user_name,
+          }
+        })
+      })
+      .then(function(users) { return res.send(users) })
+      .catch(function () { return res.notFound() })
+  },
 
 }
 
