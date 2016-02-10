@@ -1,8 +1,8 @@
 {
   "name": "utanglist",
   "private": true,
-  "version": "0.1.0",
-  "description": "a Sails application",
+  "version": "0.2.0",
+  "description": "UtangList is a webservice for project for Mandiri-IBM Hackathon 2016",
   "keywords": [],
   "dependencies": {
     "bluebird": "^2.9.30",
