@@ -20,7 +20,20 @@ module.exports = {
       .catch(function () {
         return res.notFound()
       })
-  }
+  },
+
+  autocomplete: function(req, res) {
+    Promise.resolve()
+      .then(function () {
+        return req.param('user_name')
+      })
+      .then(function (user_name) {
+        return (_.isUndefined(user_name)) ? res.notFound() : user_name
+      })
+      .then(User.getAutocomplete)
+      .then(function(users) { return res.send(users) })
+      .catch(function () { return res.notFound() })
+  },
 
 }
 

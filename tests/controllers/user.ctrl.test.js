@@ -1,5 +1,3 @@
-var Promise = require('bluebird')
-
 describe('UserController', function() {
 
   var endpoint = '/user'
@@ -89,6 +87,39 @@ describe('UserController', function() {
             .send({ 
               user_id: 'user_3'
             })
+            .expect(function(res) {
+              assert(res.status == '404', 'not 404' )
+            })
+            .end(done)
+        })
+    })
+
+  })
+
+  describe('/autocomplete', function() {
+
+    it('should return users (array)', function (done) {
+      Promise.resolve()
+        .then(function () {
+          request(sails.hooks.http.app)
+            .post(endpoint+'/autocomplete')
+            .set('Content-Type', 'application/json')
+            .send({ user_name:'a' })
+            .expect(function(res) {
+              var users = res.body
+              assert(_.isArray(users))
+            })
+            .end(done)
+        })
+    })
+
+    it('should 404 if no user_name param', function (done) {
+      Promise.resolve()
+        .then(function () {
+          request(sails.hooks.http.app)
+            .post(endpoint+'/autocomplete')
+            .set('Content-Type', 'application/json')
+            .send({})
             .expect(function(res) {
               assert(res.status == '404', 'not 404' )
             })
