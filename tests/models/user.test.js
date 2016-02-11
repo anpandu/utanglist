@@ -19,8 +19,9 @@ describe('UserModel', function() {
           assert('password' in user, 'password field doesn\'t exist' )
           assert('email' in user, 'email field doesn\'t exist' )
           assert('avatar' in user, 'avatar field doesn\'t exist' )
-          done()
+          return User.destroy(user)
         })
+        .then(function () { done() })
         .catch(done)
     })
   })
@@ -92,4 +93,20 @@ describe('UserModel', function() {
     })
   })
 
+  describe('token', function() {
+
+    it('should return token', function (done) {
+      Promise.resolve()
+        .then(function () { return User.create({ user_id:'user_4', user_name: 'user_4' })})
+        .then(function (user) { 
+          var token = user.getToken()
+          var decoded = jwt.decode(token, sails.config.tokens.jwtKey)
+          assert('user_id' in decoded, 'user_id field doesn\'t exist' )
+          assert('expired' in decoded, 'expired field doesn\'t exist' )
+          assert(decoded.user_id == user.user_id, 'user_id doesn\'t match' )
+          assert(decoded.expired <= moment().add(7,'d').valueOf(), 'expired doesn\'t match' )
+          done()
+        })
+    })
+  })
 })
