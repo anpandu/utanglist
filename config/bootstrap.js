@@ -17,6 +17,8 @@ module.exports.bootstrap = function(cb) {
 
   global._ = require('lodash')
   global.Promise = require('bluebird')
+  global.jwt = require('jwt-simple')
+  global.moment = require('moment')
   
   cb();
 };

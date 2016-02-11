@@ -92,4 +92,21 @@ describe('UserModel', function() {
         .then(function () { done() })
     })
   })
+
+  describe('token', function() {
+
+    it('should return token', function (done) {
+      Promise.resolve()
+        .then(function () { return User.create({ user_id:'user_4', user_name: 'user_4' })})
+        .then(function (user) { 
+          var token = user.getToken()
+          var decoded = jwt.decode(token, sails.config.tokens.jwtKey)
+          assert('user_id' in decoded, 'user_id field doesn\'t exist' )
+          assert('expired' in decoded, 'expired field doesn\'t exist' )
+          assert(decoded.user_id == user.user_id, 'user_id doesn\'t match' )
+          assert(decoded.expired <= moment().add(7,'d').valueOf(), 'expired doesn\'t match' )
+          done()
+        })
+    })
+  })
 })
