@@ -7,19 +7,8 @@ describe('UserController', function() {
     it('should created new', function (done) {
       var _user
       Promise.resolve()
-        .then(function () { 
-          return User.create({ 
-            user_id:'user_1',  
-            user_name:'123',  
-            display_name:'123',  
-            password:'123',  
-            email:'123',  
-            avatar:'123',  
-          }) 
-        })
-        .then(function (user) {
-          _user = user
-          request(sails.hooks.http.app)
+        .then(function () {
+          return request(sails.hooks.http.app)
             .post(endpoint)
             .set('Content-Type', 'application/json')
             .send({ 
@@ -38,10 +27,10 @@ describe('UserController', function() {
               assert('password' in user, 'password field doesn\'t exist' )
               assert('email' in user, 'email field doesn\'t exist' )
               assert('avatar' in user, 'avatar field doesn\'t exist' )
-              assert(user.user_id == _user.user_id, 'wrong user' )
             })
-            .end(done)
         })
+        .then(function (res) { return User.destroy(res.body) })
+        .then(function () { done() })
     })
 
   })
@@ -63,7 +52,7 @@ describe('UserController', function() {
         })
         .then(function (user) {
           _user = user
-          request(sails.hooks.http.app)
+          return request(sails.hooks.http.app)
             .post(endpoint+'/login')
             .set('Content-Type', 'application/json')
             .send({ 
@@ -73,8 +62,9 @@ describe('UserController', function() {
               var result = res.body
               assert(user.user_id == result.token, 'wrong user' )
             })
-            .end(done)
         })
+        .then(function (res) { return User.destroy(_user) })
+        .then(function () { done() })
     })
 
     it('should return 404 if user doesn\'t exist', function (done) {

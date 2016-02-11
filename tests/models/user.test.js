@@ -19,8 +19,9 @@ describe('UserModel', function() {
           assert('password' in user, 'password field doesn\'t exist' )
           assert('email' in user, 'email field doesn\'t exist' )
           assert('avatar' in user, 'avatar field doesn\'t exist' )
-          done()
+          return User.destroy(user)
         })
+        .then(function () { done() })
         .catch(done)
     })
   })
@@ -91,5 +92,4 @@ describe('UserModel', function() {
         .then(function () { done() })
     })
   })
-
 })
