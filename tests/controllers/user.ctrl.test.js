@@ -91,21 +91,62 @@ describe('UserController', function() {
   describe('/autocomplete', function() {
 
     it('should return users (array)', function (done) {
+      var _user
       Promise.resolve()
-        .then(function () {
-          request(sails.hooks.http.app)
+        .then(function () { 
+          return User.create({ 
+            user_id:'user_2_autocomplete',  
+            user_name:'asd',
+          }) 
+        })
+        .then(function (user) { 
+          _user = user
+          return user.getToken()
+        })
+        .then(function (token) {
+          return request(sails.hooks.http.app)
             .post(endpoint+'/autocomplete')
             .set('Content-Type', 'application/json')
+            .set('token', token)
             .send({ user_name:'a' })
             .expect(function(res) {
               var users = res.body
+              assert(res.status == '200', 'not 200' )
               assert(_.isArray(users))
             })
-            .end(done)
         })
+        .then(function (res) { return User.destroy(_user) })
+        .then(function () { done() })
     })
 
     it('should 404 if no user_name param', function (done) {
+      var _user
+      Promise.resolve()
+        .then(function () { 
+          return User.create({ 
+            user_id:'user_2_autocomplete_2',  
+            user_name:'asd',
+          }) 
+        })
+        .then(function (user) { 
+          _user = user
+          return user.getToken()
+        })
+        .then(function (token) {
+          return request(sails.hooks.http.app)
+            .post(endpoint+'/autocomplete')
+            .set('Content-Type', 'application/json')
+            .set('token', token)
+            .send({})
+            .expect(function(res) {
+              assert(res.status == '404', 'not 404' )
+            })
+        })
+        .then(function (res) { return User.destroy(_user) })
+        .then(function () { done() })
+    })
+
+    it('should 403 if no token in header', function (done) {
       Promise.resolve()
         .then(function () {
           request(sails.hooks.http.app)
@@ -113,7 +154,24 @@ describe('UserController', function() {
             .set('Content-Type', 'application/json')
             .send({})
             .expect(function(res) {
-              assert(res.status == '404', 'not 404' )
+              assert(res.status == '403', 'not 403' )
+              assert(res.text == 'Token doesn\'t exist.')
+            })
+            .end(done)
+        })
+    })
+
+    it('should xxx if no token in header', function (done) {
+      Promise.resolve()
+        .then(function () {
+          request(sails.hooks.http.app)
+            .post(endpoint+'/autocomplete')
+            .set('Content-Type', 'application/json')
+            .set('token', 'xxx')
+            .send({})
+            .expect(function(res) {
+              assert(res.status == '403', 'not 403' )
+              assert(res.text == 'Token invalid.')
             })
             .end(done)
         })
