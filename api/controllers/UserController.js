@@ -12,10 +12,8 @@ module.exports = {
     User
       .findOne({ user_id: id })
       .then(function(user) {
-        var token = user.user_id
-        return res.send({
-          token: token
-        })
+        var token = user.getToken()
+        return res.send({ token: token })
       })
       .catch(function () {
         return res.notFound()

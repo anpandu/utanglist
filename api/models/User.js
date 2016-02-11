@@ -8,6 +8,8 @@
 module.exports = {
 
   attributes: {
+
+    // PROPERTIES
     user_id: {
       type: 'string',
       required: true,
@@ -27,8 +29,19 @@ module.exports = {
     avatar: {
       type: 'string'
     },
+
+    // FUNCTIONS
+    getToken: function () {
+      var payload = { 
+        user_id: this.user_id,
+        expired: moment().add(7,'d').valueOf(),
+      }
+      var token = jwt.encode(payload, sails.config.tokens.jwtKey)
+      return token
+    },
   },
 
+  // CLASS FUNCTIONS
   getAutocomplete: function (user_name) {
     return User
       .find({ 
@@ -44,7 +57,7 @@ module.exports = {
           }
         })
       })
-  }
+  },
 
 }
 
