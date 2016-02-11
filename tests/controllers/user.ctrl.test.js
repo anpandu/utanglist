@@ -60,7 +60,9 @@ describe('UserController', function() {
             })
             .expect(function(res) {
               var result = res.body
-              assert(user.user_id == result.token, 'wrong user' )
+              assert('token' in result, 'token field doesn\'t exist' )
+              var decoded = jwt.decode(result.token, sails.config.tokens.jwtKey)
+              assert(user.user_id == decoded.user_id, 'wrong user' )
             })
         })
         .then(function (res) { return User.destroy(_user) })
