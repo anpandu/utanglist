@@ -1,10 +1,3 @@
-/**
- * Transaction.js
- *
- * @description :: TODO: You might write a short summary of how this model works and what it represents here.
- * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
- */
-
 module.exports = {
 
   attributes: {
@@ -12,10 +5,14 @@ module.exports = {
       type: 'string',
       required: true,
     },
-    amount: {
+    total_debt: {
       type: 'integer',
       required: true,
     },
+    current_debt: {
+      type: 'integer',
+      required: true,
+    },    
     lender_id: {
       type: 'string',
       required: true,
@@ -30,4 +27,3 @@ module.exports = {
 
   }
 };
-
