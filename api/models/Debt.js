@@ -1,10 +1,6 @@
 module.exports = {
 
-  attributes: {
-  	id: {
-      type: 'string',
-      required: true,
-    },
+  attributes: {  	
     total_debt: {
       type: 'integer',
       required: true,
@@ -23,7 +19,12 @@ module.exports = {
     },
     notes: {
       type: 'text',
+      required: true,
     },
+    payments: {
+    	collection: 'payment',
+    	via: 'debt'
+    }
 
   }
 };
