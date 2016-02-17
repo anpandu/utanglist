@@ -37,7 +37,7 @@ module.exports = {
         expired: moment().add(7,'d').valueOf(),
       }
       var token = jwt.encode(payload, sails.config.tokens.jwtKey)
-      return token
+      return 'Bearer ' + token
     },
   },
 

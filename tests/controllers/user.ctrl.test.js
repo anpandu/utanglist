@@ -61,7 +61,8 @@ describe('UserController', function() {
             .expect(function(res) {
               var result = res.body
               assert('token' in result, 'token field doesn\'t exist' )
-              var decoded = jwt.decode(result.token, sails.config.tokens.jwtKey)
+              var token = result.token.split(' ')[1]
+              var decoded = jwt.decode(token, sails.config.tokens.jwtKey)
               assert(user.user_id == decoded.user_id, 'wrong user' )
             })
         })
@@ -107,7 +108,7 @@ describe('UserController', function() {
           return request(sails.hooks.http.app)
             .post(endpoint+'/autocomplete')
             .set('Content-Type', 'application/json')
-            .set('token', token)
+            .set('Authorization', token)
             .send({ user_name:'a' })
             .expect(function(res) {
               var users = res.body
@@ -136,7 +137,7 @@ describe('UserController', function() {
           return request(sails.hooks.http.app)
             .post(endpoint+'/autocomplete')
             .set('Content-Type', 'application/json')
-            .set('token', token)
+            .set('Authorization', token)
             .send({})
             .expect(function(res) {
               assert(res.status == '404', 'not 404' )
@@ -161,13 +162,13 @@ describe('UserController', function() {
         })
     })
 
-    it('should xxx if no token in header', function (done) {
+    it('should 403 if token is invalid', function (done) {
       Promise.resolve()
         .then(function () {
           request(sails.hooks.http.app)
             .post(endpoint+'/autocomplete')
             .set('Content-Type', 'application/json')
-            .set('token', 'xxx')
+            .set('Authorization', 'xxx')
             .send({})
             .expect(function(res) {
               assert(res.status == '403', 'not 403' )

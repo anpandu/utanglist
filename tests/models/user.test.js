@@ -100,6 +100,7 @@ describe('UserModel', function() {
         .then(function () { return User.create({ user_id:'user_4', user_name: 'user_4' })})
         .then(function (user) { 
           var token = user.getToken()
+          token = token.split(' ')[1]
           var decoded = jwt.decode(token, sails.config.tokens.jwtKey)
           assert('user_id' in decoded, 'user_id field doesn\'t exist' )
           assert('expired' in decoded, 'expired field doesn\'t exist' )
