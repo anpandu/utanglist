@@ -8,15 +8,28 @@
 module.exports = {
 
   login: function(req, res) {
-    var id = req.param('user_id')
-    User
-      .findOne({ user_id: id })
-      .then(function(user) {
-        var token = user.getToken()
-        return res.send({ token: token })
+    var access_token = req.param('access_token')
+    var _result = {}
+    FacebookService
+      .getUserBio(access_token)
+      .then(function (result) {
+        _result = result
+        return User.findOne({ user_id: result.user_id })
       })
-      .catch(function () {
-        return res.notFound()
+      .then(function (user) {
+        if (!_.isUndefined(user)) {
+          var token = user.getToken()
+          return res.send({ token: token })
+        } else
+          return User
+            .create(_result)
+            .then(function (user) {
+              var token = user.getToken()
+              return res.send({ token: token })
+            })
+      })
+      .catch(function (e) {
+        return res.notFound(e)
       })
   },
 

@@ -19,6 +19,7 @@ module.exports.bootstrap = function(cb) {
   global.Promise = require('bluebird')
   global.jwt = require('jwt-simple')
   global.moment = require('moment')
+  global.graph = require('fbgraph')
   
   cb();
 };

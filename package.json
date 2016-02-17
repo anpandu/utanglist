@@ -1,12 +1,13 @@
 {
   "name": "utanglist",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "UtangList is a webservice for project for Mandiri-IBM Hackathon 2016",
   "keywords": [],
   "dependencies": {
     "bluebird": "^2.9.30",
     "ejs": "~0.8.4",
+    "fbgraph": "^1.1.0",
     "grunt": "0.4.2",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-coffee": "~0.10.1",
