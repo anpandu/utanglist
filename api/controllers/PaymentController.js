@@ -1,8 +1,8 @@
 module.exports = {
 
 	create: function(req, res) {		
-	    var debt_id = req.param('debt');	    
-	    var amount = req.param('amount');	    
+	    var debt_id = req.param('debt');
+	    var amount = req.param('amount');
 
 	    Debt.findOne({id:debt_id})
         .exec(function (err,debt) {
@@ -14,6 +14,7 @@ module.exports = {
           if(debt !== undefined) {
           	if(debt.current_debt >= amount) {
           		debt.decreaseDebt(amount);
+          		console.log(debt.borrower_id + " paid " + amount + " to " + debt.lender_id);
 	          	return res.json({
 	              debt:debt
 	            });
