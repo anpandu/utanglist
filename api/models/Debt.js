@@ -29,7 +29,7 @@ module.exports = {
     	this.current_debt -= amount;
     	this.save(
 	      function(err,s){
-	        // console.log('User with ID '+s.id+' now has name '+s.name);
+	        console.log('debt decreased');
 	      }
 	    );
     }
