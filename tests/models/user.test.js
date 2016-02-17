@@ -6,19 +6,17 @@ describe('UserModel', function() {
       User
         .create({ 
           user_id:'123',  
-          user_name:'123',  
-          display_name:'123',  
-          password:'123',  
-          email:'123',  
+          full_name:'123',  
           avatar:'123',  
+          first_name:'123',  
+          last_name:'123',  
         })
         .then(function (user) {
           assert('user_id' in user, 'user_id field doesn\'t exist' )
-          assert('user_name' in user, 'user_name field doesn\'t exist' )
-          assert('display_name' in user, 'display_name field doesn\'t exist' )
-          assert('password' in user, 'password field doesn\'t exist' )
-          assert('email' in user, 'email field doesn\'t exist' )
+          assert('full_name' in user, 'full_name field doesn\'t exist' )
           assert('avatar' in user, 'avatar field doesn\'t exist' )
+          assert('first_name' in user, 'first_name field doesn\'t exist' )
+          assert('last_name' in user, 'last_name field doesn\'t exist' )
           return User.destroy(user)
         })
         .then(function () { done() })
@@ -33,7 +31,7 @@ describe('UserModel', function() {
         .then(function () { 
           var names = ['ana', 'anna', 'anni', 'annie', 'andy', 'ann', 'bobo']
           var proms = names.map(function (n, idx) {
-            return User.create({ user_id:'user_3_'+idx, user_name: n }) 
+            return User.create({ user_id:'user_3_'+idx, full_name: n }) 
           })
           return Promise.all(proms)
         })
@@ -43,8 +41,8 @@ describe('UserModel', function() {
           assert(users.length === answer.length)
           users.forEach(function (user, idx) {
             assert('user_id' in user, 'user_id field doesn\'t exist' )
-            assert('user_name' in user, 'user_name field doesn\'t exist' )
-            assert(user.user_name === answer[idx], 'user_name doesn\'t match' )
+            assert('full_name' in user, 'full_name field doesn\'t exist' )
+            assert(user.full_name === answer[idx], 'full_name doesn\'t match' )
           })
         })
         .then(function () { done() })
@@ -58,8 +56,8 @@ describe('UserModel', function() {
           assert(users.length === answer.length)
           users.forEach(function (user, idx) {
             assert('user_id' in user, 'user_id field doesn\'t exist' )
-            assert('user_name' in user, 'user_name field doesn\'t exist' )
-            assert(user.user_name === answer[idx], 'user_name doesn\'t match' )
+            assert('full_name' in user, 'full_name field doesn\'t exist' )
+            assert(user.full_name === answer[idx], 'full_name doesn\'t match' )
           })
         })
         .then(function () { done() })
@@ -73,8 +71,8 @@ describe('UserModel', function() {
           assert(users.length === answer.length)
           users.forEach(function (user, idx) {
             assert('user_id' in user, 'user_id field doesn\'t exist' )
-            assert('user_name' in user, 'user_name field doesn\'t exist' )
-            assert(user.user_name === answer[idx], 'user_name doesn\'t match' )
+            assert('full_name' in user, 'full_name field doesn\'t exist' )
+            assert(user.full_name === answer[idx], 'full_name doesn\'t match' )
           })
         })
         .then(function () { done() })
@@ -97,7 +95,7 @@ describe('UserModel', function() {
 
     it('should return token', function (done) {
       Promise.resolve()
-        .then(function () { return User.create({ user_id:'user_4', user_name: 'user_4' })})
+        .then(function () { return User.create({ user_id:'user_4', full_name: 'user_4' })})
         .then(function (user) { 
           var token = user.getToken()
           token = token.split(' ')[1]
