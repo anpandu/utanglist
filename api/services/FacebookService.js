@@ -5,7 +5,7 @@ module.exports = {
     return 'FacebookService'
   },
 
-  getUserBio: function (user_id, token) {
+  getUserBio: function (token) {
     return new Promise (function (resolve, reject) {
       graph
         .setAccessToken(token)
