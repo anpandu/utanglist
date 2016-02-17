@@ -12,6 +12,11 @@ module.exports = {
             });
           }
           if(debt !== undefined) {
+          	if(debt.current_debt === 0){
+          		return res.json({
+	              error:"debt is already settled"
+	            });
+          	}
           	if(debt.current_debt >= amount) {
           		debt.decreaseDebt(amount);
           		console.log(debt.borrower_id + " paid " + amount + " to " + debt.lender_id);
