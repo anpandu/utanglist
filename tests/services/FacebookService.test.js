@@ -11,8 +11,8 @@ describe('FacebookService', function() {
     FacebookService
       .getUserBio(token)
       .then(function (result) {
-        var answer = { id: '10205506227205118', full_name: 'Ananta Pandu Wicaksana', avatar: 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xtf1/v/t1.0-1/p50x50/12009766_10204777873876740_7137133415851209308_n.jpg?oh=39eda445992c332b67a549879e30cb2a&oe=575B1F80&__gda__=1465709557_17ef1287175c9ba406a59631a0557c93', first_name: 'Ananta Pandu', last_name: 'Wicaksana' }
-        assert('id' in result)
+        var answer = { user_id: '10205506227205118', full_name: 'Ananta Pandu Wicaksana', avatar: 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xtf1/v/t1.0-1/p50x50/12009766_10204777873876740_7137133415851209308_n.jpg?oh=39eda445992c332b67a549879e30cb2a&oe=575B1F80&__gda__=1465709557_17ef1287175c9ba406a59631a0557c93', first_name: 'Ananta Pandu', last_name: 'Wicaksana' }
+        assert('user_id' in result)
         assert('full_name' in result)
         assert('avatar' in result)
         assert('first_name' in result)

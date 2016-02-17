@@ -14,7 +14,7 @@ module.exports = {
             reject(err)
           else {
             var bio = {
-              id: res.id,
+              user_id: res.id,
               full_name: res.name,
               avatar: res.picture.data.url,
               first_name: res.first_name,

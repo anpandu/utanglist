@@ -69,8 +69,7 @@ describe('UserController', function() {
         .then(function () { done() })
     })
 
-    it('should return 404 if user doesn\'t exist', function (done) {
-      var _user
+    it('should return 404 if error', function (done) {
       Promise.resolve()
         .then(function () {
           request(sails.hooks.http.app)
@@ -84,6 +83,26 @@ describe('UserController', function() {
             })
             .end(done)
         })
+    })
+
+    it('should create new user if user requested doesn\'t exist', function (done) {
+      var _user
+      Promise.resolve()
+        .then(function () {
+          return request(sails.hooks.http.app)
+            .post(endpoint+'/login')
+            .set('Content-Type', 'application/json')
+            .send({ 
+              access_token: 'CAAIQjqcgR8oBABUFsYgOLMW53wYXnvSIuHyTHrEP2QZCISJYV4zYxGTkUT0v2EhtVpU7KyYvUd2m8qEHo9yvq2PYLIKAdRjfIG7NBx9Hmn3itBZCSmbAxXgRCqbnmwhDAW4Jn6vbsvPIrpLnAoNEPQIu7oItUoMqZBFowFOaR4oeMFLjIfdEzibZBZBBJlT1ZBqDZB3HH0luaYdgwucRAkMsVDSmkFHv6pSV8zw4ehOZAAZDZD'
+            })
+            .expect(function(res) {
+              assert(res.status == '200', 'not 200' )
+              var result = res.body
+              assert('token' in result, 'token field doesn\'t exist' )
+            })
+        })
+        .then(function (res) { return User.destroy(_user) })
+        .then(function () { done() })
     })
 
   })
