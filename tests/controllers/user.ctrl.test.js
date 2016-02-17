@@ -41,13 +41,12 @@ describe('UserController', function() {
       var _user
       Promise.resolve()
         .then(function () { 
-          return User.create({ 
-            user_id:'user_2',  
-            user_name:'123',  
-            display_name:'123',  
-            password:'123',  
-            email:'123',  
-            avatar:'123',  
+          return User.create({
+            user_id: '10205506227205118',
+            full_name: 'Ananta Pandu Wicaksana',
+            avatar: 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xtf1/v/t1.0-1/p50x50/12009766_10204777873876740_7137133415851209308_n.jpg?oh=39eda445992c332b67a549879e30cb2a&oe=575B1F80&__gda__=1465709557_17ef1287175c9ba406a59631a0557c93',
+            first_name: 'Ananta Pandu',
+            last_name: 'Wicaksana'
           }) 
         })
         .then(function (user) {
@@ -56,7 +55,7 @@ describe('UserController', function() {
             .post(endpoint+'/login')
             .set('Content-Type', 'application/json')
             .send({ 
-              user_id: 'user_2'
+              access_token: 'CAAIQjqcgR8oBABUFsYgOLMW53wYXnvSIuHyTHrEP2QZCISJYV4zYxGTkUT0v2EhtVpU7KyYvUd2m8qEHo9yvq2PYLIKAdRjfIG7NBx9Hmn3itBZCSmbAxXgRCqbnmwhDAW4Jn6vbsvPIrpLnAoNEPQIu7oItUoMqZBFowFOaR4oeMFLjIfdEzibZBZBBJlT1ZBqDZB3HH0luaYdgwucRAkMsVDSmkFHv6pSV8zw4ehOZAAZDZD'
             })
             .expect(function(res) {
               var result = res.body
@@ -78,7 +77,7 @@ describe('UserController', function() {
             .post(endpoint+'/login')
             .set('Content-Type', 'application/json')
             .send({ 
-              user_id: 'user_3'
+              access_token: 'asdasdasd'
             })
             .expect(function(res) {
               assert(res.status == '404', 'not 404' )
