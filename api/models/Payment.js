@@ -7,7 +7,7 @@ module.exports = {
     },
     debt: {
     	model: 'debt'
-    }
+    }    
   }
 
 };

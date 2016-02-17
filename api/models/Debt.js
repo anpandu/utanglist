@@ -24,6 +24,14 @@ module.exports = {
     payments: {
     	collection: 'payment',
     	via: 'debt'
+    },
+    decreaseDebt : function(amount) {
+    	this.current_debt -= amount;
+    	this.save(
+	      function(err,s){
+	        // console.log('User with ID '+s.id+' now has name '+s.name);
+	      }
+	    );
     }
 
   }
