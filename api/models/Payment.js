@@ -1,10 +1,6 @@
 module.exports = {
 
-  attributes: {  	
-    debt_id: {
-      type: 'string',
-      required: true,
-    },
+  attributes: {  	    
     amount: {
       type: 'integer',
       required: true,
