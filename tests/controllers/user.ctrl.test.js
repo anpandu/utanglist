@@ -41,13 +41,12 @@ describe('UserController', function() {
       var _user
       Promise.resolve()
         .then(function () { 
-          return User.create({ 
-            user_id:'user_2',  
-            user_name:'123',  
-            display_name:'123',  
-            password:'123',  
-            email:'123',  
-            avatar:'123',  
+          return User.create({
+            user_id: '10205506227205118',
+            full_name: 'Ananta Pandu Wicaksana',
+            avatar: 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xtf1/v/t1.0-1/p50x50/12009766_10204777873876740_7137133415851209308_n.jpg?oh=39eda445992c332b67a549879e30cb2a&oe=575B1F80&__gda__=1465709557_17ef1287175c9ba406a59631a0557c93',
+            first_name: 'Ananta Pandu',
+            last_name: 'Wicaksana'
           }) 
         })
         .then(function (user) {
@@ -56,12 +55,13 @@ describe('UserController', function() {
             .post(endpoint+'/login')
             .set('Content-Type', 'application/json')
             .send({ 
-              user_id: 'user_2'
+              access_token: 'CAAIQjqcgR8oBABUFsYgOLMW53wYXnvSIuHyTHrEP2QZCISJYV4zYxGTkUT0v2EhtVpU7KyYvUd2m8qEHo9yvq2PYLIKAdRjfIG7NBx9Hmn3itBZCSmbAxXgRCqbnmwhDAW4Jn6vbsvPIrpLnAoNEPQIu7oItUoMqZBFowFOaR4oeMFLjIfdEzibZBZBBJlT1ZBqDZB3HH0luaYdgwucRAkMsVDSmkFHv6pSV8zw4ehOZAAZDZD'
             })
             .expect(function(res) {
               var result = res.body
               assert('token' in result, 'token field doesn\'t exist' )
-              var decoded = jwt.decode(result.token, sails.config.tokens.jwtKey)
+              var token = result.token.split(' ')[1]
+              var decoded = jwt.decode(token, sails.config.tokens.jwtKey)
               assert(user.user_id == decoded.user_id, 'wrong user' )
             })
         })
@@ -69,21 +69,40 @@ describe('UserController', function() {
         .then(function () { done() })
     })
 
-    it('should return 404 if user doesn\'t exist', function (done) {
-      var _user
+    it('should return 404 if error', function (done) {
       Promise.resolve()
         .then(function () {
           request(sails.hooks.http.app)
             .post(endpoint+'/login')
             .set('Content-Type', 'application/json')
             .send({ 
-              user_id: 'user_3'
+              access_token: 'asdasdasd'
             })
             .expect(function(res) {
               assert(res.status == '404', 'not 404' )
             })
             .end(done)
         })
+    })
+
+    it('should create new user if user requested doesn\'t exist', function (done) {
+      var _user
+      Promise.resolve()
+        .then(function () {
+          return request(sails.hooks.http.app)
+            .post(endpoint+'/login')
+            .set('Content-Type', 'application/json')
+            .send({ 
+              access_token: 'CAAIQjqcgR8oBABUFsYgOLMW53wYXnvSIuHyTHrEP2QZCISJYV4zYxGTkUT0v2EhtVpU7KyYvUd2m8qEHo9yvq2PYLIKAdRjfIG7NBx9Hmn3itBZCSmbAxXgRCqbnmwhDAW4Jn6vbsvPIrpLnAoNEPQIu7oItUoMqZBFowFOaR4oeMFLjIfdEzibZBZBBJlT1ZBqDZB3HH0luaYdgwucRAkMsVDSmkFHv6pSV8zw4ehOZAAZDZD'
+            })
+            .expect(function(res) {
+              assert(res.status == '200', 'not 200' )
+              var result = res.body
+              assert('token' in result, 'token field doesn\'t exist' )
+            })
+        })
+        .then(function (res) { return User.destroy(_user) })
+        .then(function () { done() })
     })
 
   })
@@ -107,7 +126,7 @@ describe('UserController', function() {
           return request(sails.hooks.http.app)
             .post(endpoint+'/autocomplete')
             .set('Content-Type', 'application/json')
-            .set('token', token)
+            .set('Authorization', token)
             .send({ user_name:'a' })
             .expect(function(res) {
               var users = res.body
@@ -136,7 +155,7 @@ describe('UserController', function() {
           return request(sails.hooks.http.app)
             .post(endpoint+'/autocomplete')
             .set('Content-Type', 'application/json')
-            .set('token', token)
+            .set('Authorization', token)
             .send({})
             .expect(function(res) {
               assert(res.status == '404', 'not 404' )
@@ -161,13 +180,13 @@ describe('UserController', function() {
         })
     })
 
-    it('should xxx if no token in header', function (done) {
+    it('should 403 if token is invalid', function (done) {
       Promise.resolve()
         .then(function () {
           request(sails.hooks.http.app)
             .post(endpoint+'/autocomplete')
             .set('Content-Type', 'application/json')
-            .set('token', 'xxx')
+            .set('Authorization', 'xxx')
             .send({})
             .expect(function(res) {
               assert(res.status == '403', 'not 403' )
