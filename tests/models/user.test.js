@@ -108,4 +108,32 @@ describe('UserModel', function() {
         })
     })
   })
+
+  describe('getMe', function() {
+
+    it('should return user from token', function (done) {
+      var _user
+      Promise.resolve()
+        .then(function () { 
+          return User.create({ 
+            user_id:'user_3_me',  
+            full_name:'user_3_me',  
+            avatar:'user_3_me',  
+          }) 
+        })
+        .then(function (user) { 
+          _user = user
+          return user.getToken()
+        })
+        .then(function (token) {
+          User
+            .getMe(token)
+            .then(function(user) {
+              assert(user.user_id == _user.user_id, 'wrong user' )
+            })
+        })
+        .then(function (res) { return User.destroy(_user) })
+        .then(function () { done() })
+    })
+  })
 })
