@@ -56,5 +56,10 @@ module.exports = {
       })
   },
 
+  getMe: function (access_token) {
+    var decoded = jwt.decode(access_token.split(' ')[1], sails.config.tokens.jwtKey)
+    return User.findOne({ user_id: decoded.user_id })
+  },
+
 }
 

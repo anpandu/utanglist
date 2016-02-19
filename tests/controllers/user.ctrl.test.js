@@ -13,19 +13,13 @@ describe('UserController', function() {
             .set('Content-Type', 'application/json')
             .send({ 
               user_id:'user_1',  
-              user_name:'123',  
-              display_name:'123',  
-              password:'123',  
-              email:'123',  
+              full_name:'123',  
               avatar:'123',  
             })
             .expect(function(res) {
               var user = res.body
               assert('user_id' in user, 'user_id field doesn\'t exist' )
-              assert('user_name' in user, 'user_name field doesn\'t exist' )
-              assert('display_name' in user, 'display_name field doesn\'t exist' )
-              assert('password' in user, 'password field doesn\'t exist' )
-              assert('email' in user, 'email field doesn\'t exist' )
+              assert('full_name' in user, 'full_name field doesn\'t exist' )
               assert('avatar' in user, 'avatar field doesn\'t exist' )
             })
         })
@@ -115,7 +109,7 @@ describe('UserController', function() {
         .then(function () { 
           return User.create({ 
             user_id:'user_2_autocomplete',  
-            user_name:'asd',
+            full_name:'asd',
           }) 
         })
         .then(function (user) { 
@@ -127,7 +121,7 @@ describe('UserController', function() {
             .post(endpoint+'/autocomplete')
             .set('Content-Type', 'application/json')
             .set('Authorization', token)
-            .send({ user_name:'a' })
+            .send({ full_name:'a' })
             .expect(function(res) {
               var users = res.body
               assert(res.status == '200', 'not 200' )
@@ -138,13 +132,13 @@ describe('UserController', function() {
         .then(function () { done() })
     })
 
-    it('should 404 if no user_name param', function (done) {
+    it('should 404 if no full_name param', function (done) {
       var _user
       Promise.resolve()
         .then(function () { 
           return User.create({ 
             user_id:'user_2_autocomplete_2',  
-            user_name:'asd',
+            full_name:'asd',
           }) 
         })
         .then(function (user) { 
@@ -194,6 +188,39 @@ describe('UserController', function() {
             })
             .end(done)
         })
+    })
+
+  })
+
+  describe('/me', function() {
+
+    it('should return user from token', function (done) {
+      var _user
+      Promise.resolve()
+        .then(function () { 
+          return User.create({ 
+            user_id:'user_3_me',  
+            full_name:'user_3_me',  
+            avatar:'user_3_me',  
+          }) 
+        })
+        .then(function (user) { 
+          _user = user
+          return user.getToken()
+        })
+        .then(function (token) {
+          return request(sails.hooks.http.app)
+            .get(endpoint+'/me')
+            .set('Content-Type', 'application/json')
+            .set('Authorization', token)
+            .expect(function(res) {
+              var user = res.body
+              assert(res.status == '200', 'not 200' )
+              assert(user.user_id == _user.user_id, 'wrong user' )
+            })
+        })
+        .then(function (res) { return User.destroy(_user) })
+        .then(function () { done() })
     })
 
   })

@@ -36,14 +36,23 @@ module.exports = {
   autocomplete: function(req, res) {
     Promise.resolve()
       .then(function () {
-        return req.param('user_name')
+        return req.param('full_name')
       })
-      .then(function (user_name) {
-        return (_.isUndefined(user_name)) ? res.notFound() : user_name
+      .then(function (full_name) {
+        return (_.isUndefined(full_name)) ? res.notFound() : full_name
       })
       .then(User.getAutocomplete)
       .then(function(users) { return res.send(users) })
       .catch(function () { return res.notFound() })
+  },
+
+  me: function(req, res) {
+    var access_token = req.header('Authorization')
+    User
+      .getMe(access_token)
+      .then(function (user) {
+        return res.send(user)
+      })
   },
 
 }

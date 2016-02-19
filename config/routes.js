@@ -36,6 +36,7 @@ module.exports.routes = {
     view: 'homepage'
   },
 
+  'get /user/me': 'UserController.me',
   'post /user/login': 'UserController.login',
   'post /user/autocomplete': 'UserController.autocomplete',
 
