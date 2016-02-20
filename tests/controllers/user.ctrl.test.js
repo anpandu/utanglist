@@ -118,14 +118,14 @@ describe('UserController', function() {
         })
         .then(function (token) {
           return request(sails.hooks.http.app)
-            .post(endpoint+'/autocomplete')
+            .get(endpoint+'/autocomplete?full_name=a')
             .set('Content-Type', 'application/json')
             .set('Authorization', token)
-            .send({ full_name:'a' })
             .expect(function(res) {
               var users = res.body
               assert(res.status == '200', 'not 200' )
               assert(_.isArray(users))
+              assert(users.length == 1)
             })
         })
         .then(function (res) { return User.destroy(_user) })
@@ -147,7 +147,7 @@ describe('UserController', function() {
         })
         .then(function (token) {
           return request(sails.hooks.http.app)
-            .post(endpoint+'/autocomplete')
+            .get(endpoint+'/autocomplete')
             .set('Content-Type', 'application/json')
             .set('Authorization', token)
             .send({})
@@ -163,7 +163,7 @@ describe('UserController', function() {
       Promise.resolve()
         .then(function () {
           request(sails.hooks.http.app)
-            .post(endpoint+'/autocomplete')
+            .get(endpoint+'/autocomplete?full_name=a')
             .set('Content-Type', 'application/json')
             .send({})
             .expect(function(res) {
@@ -178,7 +178,7 @@ describe('UserController', function() {
       Promise.resolve()
         .then(function () {
           request(sails.hooks.http.app)
-            .post(endpoint+'/autocomplete')
+            .get(endpoint+'/autocomplete?full_name=a')
             .set('Content-Type', 'application/json')
             .set('Authorization', 'xxx')
             .send({})

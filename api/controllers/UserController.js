@@ -36,7 +36,7 @@ module.exports = {
   autocomplete: function(req, res) {
     Promise.resolve()
       .then(function () {
-        return req.param('full_name')
+        return req.query.full_name
       })
       .then(function (full_name) {
         return (_.isUndefined(full_name)) ? res.notFound() : full_name
