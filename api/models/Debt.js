@@ -1,6 +1,8 @@
 module.exports = {
 
   attributes: {  	
+
+    // attributes
     total_debt: {
       type: 'integer',
       required: true,
@@ -25,14 +27,30 @@ module.exports = {
     	collection: 'payment',
     	via: 'debt'
     },
+
+    // objec functions
     decreaseDebt : function(amount) {
-    	this.current_debt -= amount;
+    	this.current_debt -= amount
     	this.save(
 	      function(err,s){
-	        console.log('debt decreased');
+	        console.log('debt decreased')
 	      }
-	    );
+	    )
     }
 
+  },
+
+  // class functions
+  getLendedDebtsByUser : function(user_id) {
+    return Debt
+      .find({ lender_id: user_id})
+      .populate('payments')
+  },
+  getBorrowedDebtsByUser : function(user_id) {
+    return Debt
+      .find({ borrower_id: user_id})
+      .populate('payments')
   }
-};
+
+
+}

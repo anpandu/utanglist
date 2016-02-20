@@ -6,12 +6,8 @@ module.exports = {
         .getMe(access_token)
         .then(function (user) {
           Debt
-            .find({ lender_id: user.user_id})
-            .populate('payments')
-            .exec(function (err, debt){
-              if (err) {
-                return res.negotiate(err)
-              }     
+            .getLendedDebtsByUser(user.user_id)
+            .then(function (debt){
               return res.json(debt)
             })
         })
@@ -23,14 +19,11 @@ module.exports = {
         .getMe(access_token)
         .then(function (user) {
           Debt
-            .find({ borrower_id: user.user_id})
-            .populate('payments')
-            .exec(function (err, debt){
-              if (err) {
-                return res.negotiate(err)
-              }     
+            .getBorrowedDebtsByUser(user.user_id)
+            .then(function (debt){
               return res.json(debt)
             })
+            .catch(console.log)
         })
   }
 
