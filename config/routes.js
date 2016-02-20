@@ -40,6 +40,10 @@ module.exports.routes = {
   'post /user/login': 'UserController.login',
   'post /user/autocomplete': 'UserController.autocomplete',
 
+  'get /debt/lend': 'DebtController.lendedDebtsByUser',
+  'get /debt/borrow': 'DebtController.borrowedDebtsByUser',
+  'post /debt/add': 'DebtController.add',
+
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *
