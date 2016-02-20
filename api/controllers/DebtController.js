@@ -50,7 +50,7 @@ module.exports = {
   },
 
   pay_off : function(req,res) {
-    var debtId = req.param('debt_id')
+    var debtId = req.param('id')
     Debt
       .findOne({id:debtId})
       .exec(function (err, debt) {
