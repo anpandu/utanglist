@@ -91,12 +91,9 @@ describe('PaymentController', function() {
         })
         .then(function () {
           return request(sails.hooks.http.app)
-            .post(endpoint+'/approve')
+            .patch(endpoint + "/" + _payment.id + '/approve')
             .set('Content-Type', 'application/json')
             .set('Authorization', _user.getToken())
-            .send({
-              payment_id: _payment.id
-            })
             .expect(function(res) {
               _payment = res.body
               assert.equal(_payment.status, "approved")
@@ -117,7 +114,7 @@ describe('PaymentController', function() {
 
   describe('/payment/reject', function() {
 
-    it('approve payment', function (done) {
+    it('reject payment', function (done) {
       var _debt
       var _payment
       var _user
@@ -153,12 +150,9 @@ describe('PaymentController', function() {
         })
         .then(function () {
           return request(sails.hooks.http.app)
-            .post(endpoint+'/reject')
+            .patch(endpoint + "/" + _payment.id + '/reject')
             .set('Content-Type', 'application/json')
             .set('Authorization', _user.getToken())
-            .send({
-              payment_id: _payment.id
-            })
             .expect(function(res) {
               _payment = res.body
               assert.equal(_payment.status, "rejected")
