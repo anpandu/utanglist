@@ -108,12 +108,18 @@ describe('UserController', function() {
       Promise.resolve()
         .then(function () { 
           return User.create({ 
+            user_id:'user_2_autocomplete_2',  
+            full_name:'asdhaha',
+          }) 
+        })
+        .then(function (user) { 
+          _user = user
+          return User.create({ 
             user_id:'user_2_autocomplete',  
             full_name:'asd',
           }) 
         })
         .then(function (user) { 
-          _user = user
           return user.getToken()
         })
         .then(function (token) {
@@ -126,6 +132,7 @@ describe('UserController', function() {
               assert(res.status == '200', 'not 200' )
               assert(_.isArray(users))
               assert(users.length == 1)
+              assert(users[0].user_id == _user.user_id)
             })
         })
         .then(function (res) { return User.destroy(_user) })
