@@ -31,11 +31,7 @@ module.exports = {
     // object functions
     decreaseDebt : function(amount) {
     	this.current_debt -= amount
-    	return this.save(
-	      function(err,s){
-	        console.log('debt decreased to ' + this.current_debt)
-	      }
-	    )
+    	this.save()
     },
 
   },

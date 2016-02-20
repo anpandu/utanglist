@@ -10,8 +10,13 @@ module.exports = {
       required: true,
     },
     debt: {
-    	model: 'debt'
+      model: 'debt'
+    },
+
+    setStatus: function (status) {
+      this.status = status
+      this.save()
     }
   }
 
-};
+}
