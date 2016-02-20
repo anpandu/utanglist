@@ -42,6 +42,7 @@ module.exports.routes = {
 
   'get /debt/lend': 'DebtController.lendedDebtsByUser',
   'get /debt/borrow': 'DebtController.borrowedDebtsByUser',
+  'post /debt/add': 'DebtController.add',
 
   /***************************************************************************
   *                                                                          *
