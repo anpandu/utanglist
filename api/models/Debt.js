@@ -1,6 +1,6 @@
 module.exports = {
 
-  attributes: {  	
+  attributes: {
 
     // attributes
     total_debt: {
@@ -10,7 +10,7 @@ module.exports = {
     current_debt: {
       type: 'integer',
       required: true,
-    },    
+    },
     lender_id: {
       type: 'string',
       required: true,
@@ -28,15 +28,15 @@ module.exports = {
     	via: 'debt'
     },
 
-    // objec functions
+    // object functions
     decreaseDebt : function(amount) {
     	this.current_debt -= amount
-    	this.save(
+    	return this.save(
 	      function(err,s){
-	        console.log('debt decreased')
+	        console.log('debt decreased to ' + this.current_debt)
 	      }
 	    )
-    }
+    },
 
   },
 
@@ -46,11 +46,11 @@ module.exports = {
       .find({ lender_id: user_id})
       .populate('payments')
   },
+
   getBorrowedDebtsByUser : function(user_id) {
     return Debt
       .find({ borrower_id: user_id})
       .populate('payments')
-  }
-
+  },
 
 }
