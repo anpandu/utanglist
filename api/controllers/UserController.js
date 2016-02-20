@@ -42,7 +42,14 @@ module.exports = {
         return (_.isUndefined(full_name)) ? res.notFound() : full_name
       })
       .then(User.getAutocomplete)
-      .then(function(users) { return res.send(users) })
+      .then(function(users) { 
+        return User
+          .getMe(req.header('Authorization'))
+          .then(function (user) {
+            var result = users.filter(function (u) { return u.user_id !== user.user_id})
+            return res.send(result)
+          })
+      })
       .catch(function () { return res.notFound() })
   },
 
