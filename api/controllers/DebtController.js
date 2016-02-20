@@ -47,6 +47,26 @@ module.exports = {
             })
             .catch(console.log)
         })
+  },
+
+  settle : function(req,res) {
+    var debtId = req.param('debt_id')
+    Debt
+      .findOne({id:debtId})
+      .exec(function (err, debt) {
+        Payment
+          .create({
+            amount: debt.current_debt,
+            status: "approved",
+            debt: debt.id,
+          })
+          .exec(function (err, payment) {
+            console.log(payment)
+          })
+        debt.current_debt = 0
+        debt.save()
+        return res.json(debt)
+      })
   }
 
 }

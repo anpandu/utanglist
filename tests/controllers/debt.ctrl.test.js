@@ -9,24 +9,24 @@ describe('DebtController', function() {
       var _user
       var _user2
       Promise.resolve()
-        .then(function () { 
+        .then(function () {
           return User
             .create({ user_id: '10205506227205118', full_name: 'Ananta Pandu Wicaksana', })
             .then(function (user) { _user = user; return user})
         })
-        .then(function () { 
+        .then(function () {
           return User
             .create({ user_id: '666', full_name: 'satan', })
             .then(function (user) { _user2 = user; return user})
         })
-        .then(function () { 
+        .then(function () {
           return Debt.create({
             total_debt: '5000',
             current_debt: '5000',
             lender_id: '10205506227205118',
             borrower_id: '666',
             notes: 'sold my soul'
-          }) 
+          })
           .then(function (debt) { _debt = debt; return debt})
         })
         .then(function () {
@@ -72,24 +72,24 @@ describe('DebtController', function() {
       var _user
       var _user2
       Promise.resolve()
-        .then(function () { 
+        .then(function () {
           return User
             .create({ user_id: '10205506227205118', full_name: 'Ananta Pandu Wicaksana', })
             .then(function (user) { _user = user; return user})
         })
-        .then(function () { 
+        .then(function () {
           return User
             .create({ user_id: '666', full_name: 'satan', })
             .then(function (user) { _user2 = user; return user})
         })
-        .then(function () { 
+        .then(function () {
           return Debt.create({
             total_debt: '5000',
             current_debt: '5000',
             lender_id: '10205506227205118',
             borrower_id: '666',
             notes: 'sold my soul'
-          }) 
+          })
           .then(function (debt) { _debt = debt; return debt})
         })
         .then(function () {
@@ -135,12 +135,12 @@ describe('DebtController', function() {
       var _user
       var _user2
       Promise.resolve()
-        .then(function () { 
+        .then(function () {
           return User
             .create({ user_id: '10205506227205118', full_name: 'Ananta Pandu Wicaksana', })
             .then(function (user) { _user = user; return user})
         })
-        .then(function () { 
+        .then(function () {
           return User
             .create({ user_id: '666', full_name: 'satan', })
             .then(function (user) { _user2 = user; return user})
@@ -177,12 +177,12 @@ describe('DebtController', function() {
       var _user
       var _user2
       Promise.resolve()
-        .then(function () { 
+        .then(function () {
           return User
             .create({ user_id: '10205506227205118', full_name: 'Ananta Pandu Wicaksana', })
             .then(function (user) { _user = user; return user})
         })
-        .then(function () { 
+        .then(function () {
           return User
             .create({ user_id: '666', full_name: 'satan', })
             .then(function (user) { _user2 = user; return user})
@@ -231,4 +231,59 @@ describe('DebtController', function() {
         .then(function () { done() })
     })
   })
+
+  describe(endpoint+'/settle', function() {
+
+    it('settle debt', function (done) {
+      var _debt
+      var _user
+      var _user2
+      Promise.resolve()
+        .then(function () {
+          return User
+            .create({ user_id: '10205506227205118', full_name: 'Ananta Pandu Wicaksana', })
+            .then(function (user) { _user = user; return user})
+        })
+        .then(function () {
+          return User
+            .create({ user_id: '666', full_name: 'satan', })
+            .then(function (user) { _user2 = user; return user})
+        })
+        .then(function () {
+          return Debt.create({
+              total_debt: '5000',
+              current_debt: '5000',
+              lender_id: '10205506227205118',
+              borrower_id: '666',
+              notes: 'sold my soul'
+            })
+            .then(function (debt) { _debt = debt; return debt})
+        })
+        .then(function () {
+          return request(sails.hooks.http.app)
+            .post(endpoint+'/settle')
+            .set('Content-Type', 'application/json')
+            .set('Authorization', _user.getToken())
+            .send({
+              debt_id: _debt.id
+            })
+            .expect(function(res) {
+              var returnedDebt = res.body
+              console.log(returnedDebt)
+              assert.equal(returnedDebt.current_debt, 0)
+              Payment
+                .findOne({debt: returnedDebt.id})
+                .exec(function (err, payment) {
+                  assert.equal(payment.status, "approved");
+                  assert.equal(payment.amount, 5000);
+                })
+            })
+        })
+        .then(function () { return Debt.destroy({id:_debt.id}) })
+        .then(function () { return User.destroy({id:_user.id}) })
+        .then(function () { return User.destroy({id:_user2.id}) })
+        .then(function () { done() })
+    })
+  })
+
 })
