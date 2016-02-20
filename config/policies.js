@@ -50,7 +50,12 @@ module.exports.policies = {
 	// }
 
   UserController: {
-    autocomplete: ['JWTAuth']
-  }
+    autocomplete: ['JWTAuth'],
+  },
+
+  DebtController: {
+    lendedDebtsByUser: ['JWTAuth'],
+    borrowedDebtsByUser: ['JWTAuth'],
+  },
 
 }
