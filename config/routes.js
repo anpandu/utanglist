@@ -43,6 +43,10 @@ module.exports.routes = {
   'get /debt/lend': 'DebtController.lendedDebtsByUser',
   'get /debt/borrow': 'DebtController.borrowedDebtsByUser',
   'post /debt/add': 'DebtController.add',
+  'patch /debt/:id/pay_off': 'DebtController.pay_off',
+
+  'patch /payment/:id/approve': 'PaymentController.approve',
+  'patch /payment/:id/reject': 'PaymentController.reject',
 
   /***************************************************************************
   *                                                                          *
