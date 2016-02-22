@@ -20,7 +20,7 @@ module.exports = {
                           debt: debtId,
                         })
                         .then(function (payment) {
-                          console.log("payment created: id " + payment.id)
+                          // console.log("payment created: id " + payment.id)
                           return res.json(payment)
                         })
                     }
@@ -54,7 +54,7 @@ module.exports = {
             .exec(function (err, debt) {
               if (debt !== undefined) {
                 debt.decreaseDebt(payment.amount)
-                console.log("Payment approved: " + debt.borrower_id + " paid " + payment.amount + " to " + debt.lender_id)
+                // console.log("Payment approved: " + debt.borrower_id + " paid " + payment.amount + " to " + debt.lender_id)
                 return res.json(payment)
               }
             })
@@ -73,7 +73,7 @@ module.exports = {
       .exec(function (err, payment) {
         if (payment !== undefined) {
           payment.setStatus("rejected")
-          console.log("Payment rejected: id " + payment.id)
+          // console.log("Payment rejected: id " + payment.id)
           return res.json(payment)
         }
         else {

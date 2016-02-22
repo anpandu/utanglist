@@ -20,7 +20,16 @@ module.exports = {
               first_name: res.first_name,
               last_name: res.last_name,
             }
-            resolve(bio)
+            graph
+              .get('/me/picture?type=large&redirect=false', function(err, res) {
+                if (err !== null)
+                  reject(err)
+                else {
+                  bio.avatar = res.data.url
+                  resolve(bio)
+                }
+              })
+            // resolve(bio)
           }
         })
     })
