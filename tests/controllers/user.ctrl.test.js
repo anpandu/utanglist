@@ -110,6 +110,7 @@ describe('UserController', function() {
           return User.create({ 
             user_id:'user_2_autocomplete_2',  
             full_name:'asdhaha',
+            avatar:'http://pinbook.me/wp-content/uploads/2016/01/fdebcdecbaabfjpg-1453256585l4pc8.png',
           }) 
         })
         .then(function (user) { 
