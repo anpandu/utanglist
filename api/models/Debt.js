@@ -41,12 +41,34 @@ module.exports = {
     return Debt
       .find({ lender_id: user_id})
       .populate('payments')
+      .then(function (debts) {
+        return User
+          .findOne({user_id: user_id})
+          .then(function (user) {
+            debts = debts.map(function (debt) {
+              debt.user = user
+              return debt
+            })
+            return debts
+          })
+      })
   },
 
   getBorrowedDebtsByUser : function(user_id) {
     return Debt
       .find({ borrower_id: user_id})
       .populate('payments')
+      .then(function (debts) {
+        return User
+          .findOne({user_id: user_id})
+          .then(function (user) {
+            debts = debts.map(function (debt) {
+              debt.user = user
+              return debt
+            })
+            return debts
+          })
+      })
   },
 
 }
