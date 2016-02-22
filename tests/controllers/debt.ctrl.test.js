@@ -269,7 +269,6 @@ describe('DebtController', function() {
             })
             .expect(function(res) {
               var returnedDebt = res.body
-              console.log(returnedDebt)
               assert.equal(returnedDebt.current_debt, 0)
               Payment
                 .findOne({debt: returnedDebt.id})

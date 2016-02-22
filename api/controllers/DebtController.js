@@ -61,7 +61,7 @@ module.exports = {
             debt: debt.id,
           })
           .exec(function (err, payment) {
-            console.log(payment)
+            // console.log(payment)
           })
         debt.current_debt = 0
         debt.save()
