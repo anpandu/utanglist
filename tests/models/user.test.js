@@ -42,6 +42,7 @@ describe('UserModel', function() {
           users.forEach(function (user, idx) {
             assert('user_id' in user, 'user_id field doesn\'t exist' )
             assert('full_name' in user, 'full_name field doesn\'t exist' )
+            assert('avatar' in user, 'avatar field doesn\'t exist' )
             assert(user.full_name === answer[idx], 'full_name doesn\'t match' )
           })
         })

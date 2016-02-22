@@ -51,6 +51,7 @@ module.exports = {
           return { 
             user_id: u.user_id,
             full_name: u.full_name,
+            avatar: u.avatar,
           }
         })
       })
