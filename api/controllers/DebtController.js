@@ -49,8 +49,8 @@ module.exports = {
         })
   },
 
-  settle : function(req,res) {
-    var debtId = req.param('debt_id')
+  pay_off : function(req,res) {
+    var debtId = req.param('id')
     Debt
       .findOne({id:debtId})
       .exec(function (err, debt) {

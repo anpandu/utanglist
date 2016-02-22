@@ -232,9 +232,9 @@ describe('DebtController', function() {
     })
   })
 
-  describe(endpoint+'/settle', function() {
+  describe(endpoint+'/pay_off', function() {
 
-    it('settle debt', function (done) {
+    it('pay off debt', function (done) {
       var _debt
       var _user
       var _user2
@@ -261,12 +261,9 @@ describe('DebtController', function() {
         })
         .then(function () {
           return request(sails.hooks.http.app)
-            .post(endpoint+'/settle')
+            .patch(endpoint + "/" + _debt.id + '/pay_off')
             .set('Content-Type', 'application/json')
             .set('Authorization', _user.getToken())
-            .send({
-              debt_id: _debt.id
-            })
             .expect(function(res) {
               var returnedDebt = res.body
               assert.equal(returnedDebt.current_debt, 0)

@@ -42,7 +42,7 @@ module.exports = {
 	},
 
   approve: function(req, res) {
-    var paymentId = req.param('payment_id')
+    var paymentId = req.param('id')
 
     Payment
       .findOne({id:paymentId, status:"pending"})
@@ -66,7 +66,7 @@ module.exports = {
   },
 
   reject: function(req, res) {
-    var paymentId = req.param('payment_id')
+    var paymentId = req.param('id')
 
     Payment
       .findOne({id:paymentId, status:"pending"})
