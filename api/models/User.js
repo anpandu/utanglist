@@ -40,12 +40,11 @@ module.exports = {
 
   // CLASS FUNCTIONS
   getAutocomplete: function (full_name) {
-    return User
-      .find({ 
-        where: { full_name: { 'like': full_name+'%' } },
-        sort: 'full_name ASC',
-        limit: 5,
-      })
+    var proms = []
+    proms[0] = User.find({ where: { full_name: { 'like': full_name+'%' } }, sort: 'full_name ASC', limit: 5, })
+    proms[1] = User.find({ where: { full_name: { 'like': '% '+full_name+'%' } }, sort: 'full_name ASC', limit: 5, })
+    return Promise.all(proms)
+      .then(_.flatten)
       .then(function(users) {
         return users.map(function (u) {
           return { 

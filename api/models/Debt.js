@@ -42,15 +42,16 @@ module.exports = {
       .find({ lender_id: user_id})
       .populate('payments')
       .then(function (debts) {
-        return User
-          .findOne({user_id: user_id})
-          .then(function (user) {
-            debts = debts.map(function (debt) {
-              debt.user = user
-              return debt
-            })
-            return debts
+        var proms = debts
+          .map(function (debt) {
+            return User
+              .findOne({user_id: debt.borrower_id})
+              .then(function (user) {
+                debt.user = user
+                return debt
+              })
           })
+        return Promise.all(proms)
       })
   },
 
@@ -59,15 +60,16 @@ module.exports = {
       .find({ borrower_id: user_id})
       .populate('payments')
       .then(function (debts) {
-        return User
-          .findOne({user_id: user_id})
-          .then(function (user) {
-            debts = debts.map(function (debt) {
-              debt.user = user
-              return debt
-            })
-            return debts
+        var proms = debts
+          .map(function (debt) {
+            return User
+              .findOne({user_id: debt.lender_id})
+              .then(function (user) {
+                debt.user = user
+                return debt
+              })
           })
+        return Promise.all(proms)
       })
   },
 
