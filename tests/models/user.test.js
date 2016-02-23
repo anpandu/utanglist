@@ -29,15 +29,15 @@ describe('UserModel', function() {
     it('should return max 5', function (done) {
       Promise.resolve()
         .then(function () { 
-          var names = ['ana', 'anna', 'anni', 'annie', 'andy', 'ann', 'bobo']
+          var names = ['ana', 'anna', 'anni', 'annie', 'andy', 'ann', 'bobo', 'banana', 'ba ana']
           var proms = names.map(function (n, idx) {
             return User.create({ user_id:'user_3_'+idx, full_name: n }) 
           })
           return Promise.all(proms)
         })
-        .then(function () { return User.getAutocomplete('a') })
+        .then(function () { return User.getAutocomplete('an') })
         .then(function (users) {
-          var answer = ['ana', 'andy', 'ann', 'anna', 'anni']
+          var answer = ['ana', 'andy', 'ann', 'anna', 'anni', 'ba ana']
           assert(users.length === answer.length)
           users.forEach(function (user, idx) {
             assert('user_id' in user, 'user_id field doesn\'t exist' )
@@ -66,7 +66,7 @@ describe('UserModel', function() {
 
     it('should return array of 1 if match 1', function (done) {
       Promise.resolve()
-        .then(function () { return User.getAutocomplete('b') })
+        .then(function () { return User.getAutocomplete('bo') })
         .then(function (users) {
           var answer = ['bobo']
           assert(users.length === answer.length)
