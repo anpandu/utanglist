@@ -35,4 +35,5 @@ Payment
     get /payment/:id
     patch /payment/:id/approve
     patch /payment/:id/reject
+    get /payment/ecash_balance_inquiry
 

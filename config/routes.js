@@ -46,6 +46,7 @@ module.exports.routes = {
   'patch /debt/:id/pay_off': 'DebtController.pay_off',
 
   'post /payment/ecash_pay': 'PaymentController.ecashPay',
+  'get /payment/ecash_balance_inquiry': 'PaymentController.ecashBalanceInquiry',
   'patch /payment/:id/approve': 'PaymentController.approve',
   'patch /payment/:id/reject': 'PaymentController.reject',
 

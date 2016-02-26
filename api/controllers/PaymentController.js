@@ -137,6 +137,23 @@ module.exports = {
           return res.notFound()
         }
       })
+  },
+
+  ecashBalanceInquiry: function (req, res) {
+    var ecashId = req.param('ecash_id')
+    var ecashPin = req.param('ecash_pin')
+    var deviceId = req.param('device_id')
+
+    EcashService
+      .getToken(ecashId, ecashPin, deviceId)
+      .then(function (result) {
+        EcashService
+          .balanceInquiry(ecashId, ecashPin, result.token)
+          .then(function (result) {
+            assert(!_.isUndefined(result))
+            done()
+          })
+      })
   }
 
 }
