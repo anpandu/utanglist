@@ -62,18 +62,11 @@ module.exports.connections = {
   ***************************************************************************/
   mongo: {
     adapter: 'sails-mongo',
-    host: 'localhost',
-    port: 27017,
-    // user: 'username',
-    // password: 'password',
-    database: 'utanglist',
-  },
-
-  mongoPandu: {
-    adapter: 'sails-mongo',
-    host: 'mongo.pandu.ml',
-    port: 27017,
-    database: 'utanglist',
+    host: '23.246.199.111',
+    port: 10131,
+    user: 'd69a23ef-3baf-47e7-985d-dac4ff39fec8',
+    password: '96c74ca7-0dff-4bff-a0ed-85a41eec2e0b',
+    database: 'db',
   },
 
   // cloudant: {
