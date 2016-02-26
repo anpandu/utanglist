@@ -1,13 +1,12 @@
 module.exports = {
 
   getToken: function (ecashId, ecashPin, deviceId) {
-    axios.get("https://api.apim.ibmcloud.com/ex-icha-fmeirisidibmcom-ecash-be/sb/emoney/v1/loginMember?msisdn=" + ecashId + "&credentials=" + ecashPin + "&uid=" + deviceId)
-      .then(function (response) {
-        console.log(response);
+    var url = "https://api.apim.ibmcloud.com/ex-icha-fmeirisidibmcom-ecash-be/sb/emoney/v1/loginMember?msisdn=" + ecashId + "&credentials=" + ecashPin + "&uid=" + deviceId
+    return axios
+      .get(url)
+      .catch(function (err) {
+        return err
       })
-      .catch(function (response) {
-        console.log(response);
-      });
 
   },
 
