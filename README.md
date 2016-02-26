@@ -5,7 +5,6 @@ a [Sails](http://sailsjs.org) application
 Endpoints:
 
 Debt
-
     post /debt
       total_debt
       current_debt
@@ -19,8 +18,16 @@ Debt
       token
     patch /debt/:id/pay_off
 
-Payment
+DebtDemand
+    get /debt/:id
+    post /debtdemand
+      total_debt
+      lender_id
+      borrower_id
+      notes
+    patch /debt/:id/approve
 
+Payment
     post /payment
       debt
       amount

@@ -40,9 +40,11 @@ module.exports.routes = {
   'post /user/login': 'UserController.login',
   'get /user/autocomplete': 'UserController.autocomplete',
 
+
   'get /debt/lend': 'DebtController.lendedDebtsByUser',
   'get /debt/borrow': 'DebtController.borrowedDebtsByUser',
   'post /debt/add': 'DebtController.add',
+  'get /debt/:id': 'DebtController.customGetDebt',
   'patch /debt/:id/pay_off': 'DebtController.pay_off',
 
   'post /payment/ecash_pay': 'PaymentController.ecashPay',
@@ -50,6 +52,7 @@ module.exports.routes = {
   'patch /payment/:id/approve': 'PaymentController.approve',
   'patch /payment/:id/reject': 'PaymentController.reject',
 
+  'get /debtdemand/feed': 'DebtDemandController.feed',
   'patch /debt_offer/:id/request': 'DebtOfferController.request',
   'patch /debt_offer/:id/accept': 'DebtOfferController.accept',
   'patch /debt_offer/feed': 'DebtOfferController.feed'
