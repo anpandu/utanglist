@@ -1,5 +1,18 @@
 module.exports = {
 
+  getAllDebtByToken : function(req,res) {
+      var access_token = req.header('Authorization')
+      User
+        .getMe(access_token)
+        .then(function (user) {
+          Debt
+            .getLendedDebtsByUser(user.user_id)
+            .then(function (debt){
+              return res.json(debt)
+            })
+        })
+  },
+
   lendedDebtsByUser : function(req,res) {
       var access_token = req.header('Authorization')
       User
