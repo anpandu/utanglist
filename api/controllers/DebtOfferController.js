@@ -1,5 +1,19 @@
 module.exports = {
 
+  customGet: function(req, res) {
+    var debtOfferId = req.param('id')
+    DebtOffer
+      .findOne(debtOfferId)
+      .then(function (debt_offer) {
+        User
+          .findOne({user_id: debt_offer.lender_id})
+          .then(function (user) {
+            debt_offer.user = user
+            return res.send(debt_offer)
+          })
+      })
+  },
+
   customPost: function(req, res) {
     var access_token = req.header('Authorization')
     User

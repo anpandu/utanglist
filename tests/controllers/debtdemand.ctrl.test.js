@@ -4,6 +4,42 @@ describe('DebtController', function() {
 
   describe('/debtdemand', function() {
 
+    it('GET populated', function (done) {
+      var _user
+      var _debt_demand
+      Promise.resolve()
+        .then(function () {
+          return User
+            .create({ user_id: '10205506227205118', full_name: 'Ananta Pandu Wicaksana', })
+            .then(function (user) { _user = user; return user})
+        })
+        .then(function () {
+          return DebtDemand.create({
+            total_debt: '5000',
+            borrower_id: _user.user_id,
+            notes: 'havin fun'
+          })
+          .then(function (debt_demand) { _debt_demand = debt_demand; return debt_demand })
+        })
+        .then(function () {
+          return request(sails.hooks.http.app)
+            .get(endpoint+'/'+_debt_demand.id)
+            .set('Content-Type', 'application/json')
+            .set('Authorization', _user.getToken())
+            .expect(function(res) {
+              var debt_demand = res.body
+              _debt_demand = debt_demand
+              assert(_.isObject(debt_demand))
+              assert(_.isEqual(debt_demand.borrower_id, _user.user_id))
+              assert(_.isEqual(debt_demand.borrower_id, debt_demand.user.user_id))
+              assert(_.isArray(debt_demand.lender_ids))
+            })
+        })
+        .then(function () { return User.destroy({id:_user.id}) })
+        .then(function () { return DebtDemand.destroy({id:_debt_demand.id}) })
+        .then(function () { done() })
+    })
+
     it('POST with token', function (done) {
       var _user
       var _debt_demand

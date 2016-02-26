@@ -54,12 +54,14 @@ module.exports.routes = {
   'patch /payment/:id/reject': 'PaymentController.reject',
 
   'get /debtdemand/me': 'DebtDemandController.getDebtDemandsByUser',
+  'get /debtdemand/:id': 'DebtDemandController.customGet',
   'post /debtdemand': 'DebtDemandController.customPost',
   'get /debtdemand/feed': 'DebtDemandController.feed',
   'patch /debtdemand/:id/request': 'DebtDemandController.request',
   'patch /debtdemand/:id/accept': 'DebtDemandController.accept',
 
   'get /debtoffer/me': 'DebtOfferController.getDebtOffersByUser',
+  'get /debtoffer/:id': 'DebtOfferController.customGet',
   'post /debtoffer': 'DebtOfferController.customPost',
   'get /debtoffer/feed': 'DebtOfferController.feed',
   'patch /debtoffer/:id/request': 'DebtOfferController.request',
