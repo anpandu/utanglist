@@ -13,7 +13,7 @@ module.exports = {
       })
   },
 
-  getDebtOffersByUser : function() {
+  getDebtOffersByUser : function(req,res) {
     var access_token = req.header('Authorization')
     User
       .getMe(access_token)
@@ -35,31 +35,33 @@ module.exports = {
         return DebtOffer
           .findOne({id: id})
           .then(function (debtoffer) {
-            debtoffer.borrower_ids += [user.user_id]
+            debtoffer.borrower_ids.push(user.user_id)
             return debtoffer.save(function (err, s) { res.json(s) })
           })
       })
   },
 
-  accept : function() {
+  accept : function(req,res) {
+    var access_token = req.header('Authorization')
     var id = req.param('id')
     var borrowerId = req.param('borrower_id')
     var notes = req.param('notes')
-
-    DebtOffer
-      .findOne({id: id})
-      .exec(function(debtOffer) {
-        debtOffer.accept()
-        Debt
-          .create({
-            total_debt: debtOffer.total_debt,
-            current_debt: debtOffer.total_debt,
-            lender_id: debtOffer.lender_id,
-            borrower_id: borrowerId,
-            notes: notes,
-          })
-          .then(function(){
-            return debtOffer
+    User
+      .getMe(access_token)
+      .then(function (user) {
+        return DebtOffer
+          .findOne({id: id})
+          .then(function (debtOffer) {
+            debtOffer.is_accepted = true
+            Debt
+              .create({
+                total_debt: debtOffer.total_debt,
+                current_debt: debtOffer.total_debt,
+                lender_id: debtOffer.lender_id,
+                borrower_id: borrowerId,
+                notes: notes
+              })
+            return debtOffer.save(function (err, s) { res.json(s) })
           })
       })
 
