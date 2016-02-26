@@ -118,6 +118,8 @@ describe('DebtController', function() {
               assert(_.isEqual(debt_demand.borrower_id, _debt_demand.borrower_id))
               assert(_.isEqual(debt_demand.total_debt, _debt_demand.total_debt))
               assert(_.isEqual(debt_demand.notes, _debt_demand.notes))
+              assert(_.isObject(debt_demand.user))
+              assert(_.isEqual(debt_demand.user.user_id, _user.user_id))
             })
         })
         .then(function () { return DebtDemand.destroy({id:_debt_demand.id}) })
