@@ -1,7 +1,7 @@
 {
   "name": "utanglist",
   "private": true,
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "UtangList is a webservice for project for Mandiri-IBM Hackathon 2016",
   "keywords": [],
   "dependencies": {
