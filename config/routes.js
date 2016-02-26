@@ -59,10 +59,11 @@ module.exports.routes = {
   'patch /debtdemand/:id/request': 'DebtDemandController.request',
   'patch /debtdemand/:id/accept': 'DebtDemandController.accept',
 
+  'get /debtoffer/me': 'DebtOfferController.getDebtOffersByUser',
+  'post /debtoffer': 'DebtOfferController.customPost',
+  'get /debtoffer/feed': 'DebtOfferController.feed',
   'patch /debtoffer/:id/request': 'DebtOfferController.request',
   'patch /debtoffer/:id/accept': 'DebtOfferController.accept',
-  'get /debtoffer/feed': 'DebtOfferController.feed',
-  'get /debtoffer/me': 'DebtOfferController.getDebtOffersByUser'
 
   /***************************************************************************
   *                                                                          *

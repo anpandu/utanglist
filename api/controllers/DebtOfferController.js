@@ -1,5 +1,35 @@
 module.exports = {
 
+  customPost: function(req, res) {
+    var access_token = req.header('Authorization')
+    User
+      .getMe(access_token)
+      .then(function (user) {
+        return DebtOffer
+          .create({
+            lender_id: user.user_id,
+            total_debt: req.param('total_debt'),
+            notes: req.param('notes'),
+          })
+      })
+      .then(function (debt_offer) {
+        return res.send(debt_offer)
+      })
+  },
+
+  getDebtOffersByUser : function(req,res) {
+    var access_token = req.header('Authorization')
+    User
+      .getMe(access_token)
+      .then(function (user) {
+        return DebtOffer
+          .find({lender_id: user.user_id})
+      })
+      .then(function (debt_offers) {
+        return res.send(debt_offers)
+      })
+  },
+
   feed: function(req, res) {
     var access_token = req.header('Authorization')
     User
@@ -19,19 +49,6 @@ module.exports = {
             })
             return res.send(debt_offers)
           })
-      })
-  },
-
-  getDebtOffersByUser : function(req,res) {
-    var access_token = req.header('Authorization')
-    User
-      .getMe(access_token)
-      .then(function (user) {
-        return DebtOffer
-          .find({lender_id: user.user_id})
-      })
-      .then(function (debt_offers) {
-        return res.send(debt_offers)
       })
   },
 
