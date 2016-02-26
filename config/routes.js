@@ -57,6 +57,7 @@ module.exports.routes = {
   'post /debtdemand': 'DebtDemandController.customPost',
   'get /debtdemand/feed': 'DebtDemandController.feed',
   'patch /debtdemand/:id/request': 'DebtDemandController.request',
+  'patch /debtdemand/:id/accept': 'DebtDemandController.accept',
 
   'patch /debtoffer/:id/request': 'DebtOfferController.request',
   'patch /debtoffer/:id/accept': 'DebtOfferController.accept',

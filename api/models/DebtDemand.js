@@ -21,11 +21,14 @@ module.exports = {
     },
     borrower_id: {
       type: 'string',
-      required: true,
     },
     notes: {
       type: 'text',
       required: false,
+    },
+    is_accepted: {
+      type: 'boolean',
+      defaultsTo: false
     },
 
     accept: function () {

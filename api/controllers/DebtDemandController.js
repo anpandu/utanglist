@@ -13,7 +13,7 @@ module.exports = {
       .getMe(access_token)
       .then(function (user) {
         return DebtDemand
-          .create({ 
+          .create({
             borrower_id: user.user_id,
             total_debt: req.param('total_debt'),
             notes: req.param('notes'),
@@ -60,9 +60,30 @@ module.exports = {
           .findOne({id: debtDemandId})
           .then(function (debtdemand) {
             debtdemand.lender_ids.push(user.user_id)
-            return debtdemand.save(function (err, s) { res.json(s) }) 
+            return debtdemand.save(function (err, s) { res.json(s) })
           })
       })
   },
+
+  accept : function(req,res) {
+    var id = req.param('id')
+    var lenderId = req.param('lender_id')
+    var notes = req.param('notes')
+    DebtDemand
+      .findOne({id: id})
+      .then(function (debtDemand) {
+        debtDemand.is_accepted = true
+        Debt
+          .create({
+            total_debt: debtDemand.total_debt,
+            current_debt: debtDemand.total_debt,
+            borrower_id: debtDemand.borrower_id,
+            lender_id: lenderId,
+            notes: notes
+          })
+        return debtDemand.save(function (err, s) { res.json(s) })
+      })
+  }
+
 }
 
