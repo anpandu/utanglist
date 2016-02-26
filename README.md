@@ -5,6 +5,7 @@ a [Sails](http://sailsjs.org) application
 Endpoints:
 
 Debt
+
     post /debt
       total_debt
       current_debt
@@ -18,16 +19,8 @@ Debt
       token
     patch /debt/:id/pay_off
 
-DebtDemand
-    get /debt/:id
-    post /debtdemand
-      total_debt
-      lender_id
-      borrower_id
-      notes
-    patch /debt/:id/approve
-
 Payment
+
     post /payment
       debt
       amount
@@ -44,6 +37,22 @@ Payment
     patch /payment/:id/reject
     get /payment/ecash_balance_inquiry
 
+DebtDemand
+
+    post /debtdemand
+      total_debt
+      lender_id
+      borrower_ids
+      notes
+    get /debtdemand/:id
+    get /debtdemand/feed
+    get /debtdemand/me
+    patch /debtdemand/:id/request
+      borrower_id
+      notes
+    patch /debtdemand/:id/accept
+      borrower_id
+
 DebtOffer
 
     post /debtoffer
@@ -53,6 +62,7 @@ DebtOffer
       notes
     get /debtoffer/:id
     get /debtoffer/feed
+    get /debtoffer/me
     patch /debtoffer/:id/request
       borrower_id
       notes
