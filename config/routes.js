@@ -40,13 +40,17 @@ module.exports.routes = {
   'post /user/login': 'UserController.login',
   'get /user/autocomplete': 'UserController.autocomplete',
 
+
   'get /debt/lend': 'DebtController.lendedDebtsByUser',
   'get /debt/borrow': 'DebtController.borrowedDebtsByUser',
   'post /debt/add': 'DebtController.add',
+  'get /debt/:id': 'DebtController.customGetDebt',
   'patch /debt/:id/pay_off': 'DebtController.pay_off',
 
   'patch /payment/:id/approve': 'PaymentController.approve',
   'patch /payment/:id/reject': 'PaymentController.reject',
+
+  'get /debtdemand/feed': 'DebtDemandController.feed',
 
   /***************************************************************************
   *                                                                          *
