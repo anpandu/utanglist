@@ -53,6 +53,8 @@ module.exports.routes = {
   'patch /payment/:id/reject': 'PaymentController.reject',
 
   'get /debtdemand/feed': 'DebtDemandController.feed',
+  'patch /debtdemand/:id/request': 'DebtDemandController.request',
+  
   'patch /debt_offer/:id/request': 'DebtOfferController.request',
   'patch /debt_offer/:id/accept': 'DebtOfferController.accept',
   'patch /debt_offer/feed': 'DebtOfferController.feed'
