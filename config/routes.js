@@ -47,10 +47,15 @@ module.exports.routes = {
   'get /debt/:id': 'DebtController.customGetDebt',
   'patch /debt/:id/pay_off': 'DebtController.pay_off',
 
+  'post /payment/ecash_pay': 'PaymentController.ecashPay',
+  'get /payment/ecash_balance_inquiry': 'PaymentController.ecashBalanceInquiry',
   'patch /payment/:id/approve': 'PaymentController.approve',
   'patch /payment/:id/reject': 'PaymentController.reject',
 
   'get /debtdemand/feed': 'DebtDemandController.feed',
+  'patch /debt_offer/:id/request': 'DebtOfferController.request',
+  'patch /debt_offer/:id/accept': 'DebtOfferController.accept',
+  'patch /debt_offer/feed': 'DebtOfferController.feed'
 
   /***************************************************************************
   *                                                                          *
