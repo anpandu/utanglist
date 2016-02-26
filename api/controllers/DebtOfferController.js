@@ -9,7 +9,16 @@ module.exports = {
           .find({lender_id:{'!':[user.user_id]}})
       })
       .then(function (debt_offers) {
-        return res.send(debt_offers)
+        var proms = debt_offers.map(function (dd) { return User.findOne({user_id: dd.lender_id}) })
+        return Promise
+          .all(proms)
+          .then(function (users) {
+            debt_offers = debt_offers.map(function (dd, idx) {
+              dd.user = users[idx]
+              return dd
+            })
+            return res.send(debt_offers)
+          })
       })
   },
 

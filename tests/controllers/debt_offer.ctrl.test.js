@@ -50,6 +50,8 @@ describe('DebtOfferController', function() {
               assert(_.isEqual(debt_offer.borrower_id, _debt_offer.borrower_id))
               assert(_.isEqual(debt_offer.total_debt, _debt_offer.total_debt))
               assert(_.isEqual(debt_offer.notes, _debt_offer.notes))
+              assert(_.isObject(debt_offer.user))
+              assert(_.isEqual(debt_offer.user.user_id, _user.user_id))
             })
         })
         .then(function () { return Debt.destroy({id:_debt_offer.id}) })
