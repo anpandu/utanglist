@@ -48,6 +48,7 @@ DebtOffer
     get /debtoffer/feed
     patch /debtoffer/:id/request
       borrower_id
+      notes
     patch /debtoffer/:id/accept
-          borrower_id
+      borrower_id
 
