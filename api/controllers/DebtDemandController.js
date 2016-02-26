@@ -7,6 +7,23 @@
 
 module.exports = {
 
+  customPost: function(req, res) {
+    var access_token = req.header('Authorization')
+    User
+      .getMe(access_token)
+      .then(function (user) {
+        return DebtDemand
+          .create({ 
+            borrower_id: user.user_id,
+            total_debt: req.param('total_debt'),
+            notes: req.param('notes'),
+          })
+      })
+      .then(function (debt_demand) {
+        return res.send(debt_demand)
+      })
+  },
+
   feed: function(req, res) {
     var access_token = req.header('Authorization')
     User
@@ -29,7 +46,7 @@ module.exports = {
         return DebtDemand
           .findOne({id: debtDemandId})
           .then(function (debtdemand) {
-            debtdemand.lender_ids += [user.user_id]
+            debtdemand.lender_ids.push(user.user_id)
             return debtdemand.save(function (err, s) { res.json(s) }) 
           })
       })

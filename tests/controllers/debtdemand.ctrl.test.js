@@ -2,6 +2,38 @@ describe('DebtController', function() {
 
   var endpoint = '/debtdemand'
 
+  describe('/debtdemand', function() {
+  
+    it('POST with token', function (done) {
+      var _user
+      var _debt_demand
+      Promise.resolve()
+        .then(function () {
+          return User
+            .create({ user_id: '10205506227205118', full_name: 'Ananta Pandu Wicaksana', })
+            .then(function (user) { _user = user; return user})
+        })
+        .then(function () {
+          return request(sails.hooks.http.app)
+            .post(endpoint)
+            .set('Content-Type', 'application/json')
+            .set('Authorization', _user.getToken())
+            .field('total_debt', '123456')
+            .field('notes', 'nonononotes')
+            .expect(function(res) {
+              var debt_demand = res.body
+              _debt_demand = debt_demand
+              assert(_.isObject(debt_demand))
+              assert(_.isEqual(debt_demand.borrower_id, _user.user_id))
+              assert(_.isArray(debt_demand.lender_ids))
+            })
+        })
+        .then(function () { return User.destroy({id:_user.id}) })
+        .then(function () { return DebtDemand.destroy({id:_debt_demand.id}) })
+        .then(function () { done() })
+    })
+  })
+
   describe('/debtdemand/feed', function() {
 
     it('should return debtdemands except mine', function (done) {
@@ -52,8 +84,8 @@ describe('DebtController', function() {
               assert(_.isEqual(debt_demand.notes, _debt_demand.notes))
             })
         })
-        .then(function () { return Debt.destroy({id:_debt_demand.id}) })
-        .then(function () { return Debt.destroy({id:_debt_demand2.id}) })
+        .then(function () { return DebtDemand.destroy({id:_debt_demand.id}) })
+        .then(function () { return DebtDemand.destroy({id:_debt_demand2.id}) })
         .then(function () { return User.destroy({id:_user.id}) })
         .then(function () { return User.destroy({id:_user2.id}) })
         .then(function () { done() })
@@ -115,7 +147,7 @@ describe('DebtController', function() {
               assert(debt_demand.lender_ids.length === 1)
             })
         })
-        .then(function () { return Debt.destroy({id:_debt_demand.id}) })
+        .then(function () { return DebtDemand.destroy({id:_debt_demand.id}) })
         .then(function () { return User.destroy({id:_user.id}) })
         .then(function () { return User.destroy({id:_user2.id}) })
         .then(function () { done() })
