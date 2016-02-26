@@ -59,6 +59,7 @@ module.exports.policies = {
 
   DebtDemandController: {
     feed: ['JWTAuth'],
+    request: ['JWTAuth'],
   },
 
 }
