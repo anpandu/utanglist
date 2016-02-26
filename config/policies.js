@@ -58,6 +58,7 @@ module.exports.policies = {
   },
 
   DebtDemandController: {
+    me: ['JWTAuth'],
     approve: ['JWTAuth'],
   },
 
