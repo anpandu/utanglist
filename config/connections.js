@@ -69,6 +69,15 @@ module.exports.connections = {
     database: 'utanglist',
   },
 
+  cloudant: {
+    adapter: 'sails-couchdb-orm',
+    host: process.env.VCAP_SERVICES.cloudantNoSQLDB[0].credentials.host,
+    port: process.env.VCAP_SERVICES.cloudantNoSQLDB[0].credentials.port,
+    user: process.env.VCAP_SERVICES.cloudantNoSQLDB[0].credentials.username,
+    password: process.env.VCAP_SERVICES.cloudantNoSQLDB[0].credentials.password,
+    database: 'utanglist',
+  },
+
   /***************************************************************************
   *                                                                          *
   * PostgreSQL is another officially supported relational database.          *
