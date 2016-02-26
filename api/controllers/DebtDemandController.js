@@ -24,6 +24,19 @@ module.exports = {
       })
   },
 
+  getDebtDemandsByUser : function(req, res) {
+    var access_token = req.header('Authorization')
+    User
+      .getMe(access_token)
+      .then(function (user) {
+        return DebtDemand
+          .find({borrower_id: user.user_id})
+      })
+      .then(function (debtdemands) {
+        return res.send(debtdemands)
+      })
+  },
+
   feed: function(req, res) {
     var access_token = req.header('Authorization')
     User

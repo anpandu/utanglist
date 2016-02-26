@@ -27,6 +27,11 @@ module.exports = {
       type: 'text',
       required: false,
     },
+
+    accept: function () {
+      this.is_accepted = true
+      this.save()
+    },
   },
 }
 
