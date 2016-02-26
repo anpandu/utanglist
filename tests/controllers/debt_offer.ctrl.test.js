@@ -4,6 +4,71 @@ describe('DebtOfferController', function() {
 
   describe('/debtoffer/feed', function() {
 
+    it('GET populated', function (done) {
+      var _user
+      var _debt_offer
+      Promise.resolve()
+        .then(function () {
+          return User
+            .create({ user_id: '10205506227205118', full_name: 'Ananta Pandu Wicaksana', })
+            .then(function (user) { _user = user; return user})
+        })
+        .then(function () {
+          return DebtOffer.create({
+            total_debt: '5000',
+            lender_id: _user.user_id,
+            notes: 'havin fun'
+          })
+          .then(function (debt_offer) { _debt_offer = debt_offer; return debt_offer })
+        })
+        .then(function () {
+          return request(sails.hooks.http.app)
+            .get(endpoint+'/'+_debt_offer.id)
+            .set('Content-Type', 'application/json')
+            .set('Authorization', _user.getToken())
+            .expect(function(res) {
+              var debt_offer = res.body
+              _debt_offer = debt_offer
+              assert(_.isObject(debt_offer))
+              assert(_.isEqual(debt_offer.lender_id, _user.user_id))
+              assert(_.isEqual(debt_offer.lender_id, debt_offer.user.user_id))
+              assert(_.isArray(debt_offer.borrower_ids))
+            })
+        })
+        .then(function () { return User.destroy({id:_user.id}) })
+        .then(function () { return DebtOffer.destroy({id:_debt_offer.id}) })
+        .then(function () { done() })
+    })
+
+    it('POST with token', function (done) {
+      var _user
+      var _debt_offer
+      Promise.resolve()
+        .then(function () {
+          return User
+            .create({ user_id: '10205506227205118', full_name: 'Ananta Pandu Wicaksana', })
+            .then(function (user) { _user = user; return user})
+        })
+        .then(function () {
+          return request(sails.hooks.http.app)
+            .post(endpoint)
+            .set('Content-Type', 'application/json')
+            .set('Authorization', _user.getToken())
+            .field('total_debt', '123456')
+            .field('notes', 'nonononotes')
+            .expect(function(res) {
+              var debt_offer = res.body
+              _debt_offer = debt_offer
+              assert(_.isObject(debt_offer))
+              assert(_.isEqual(debt_offer.lender_id, _user.user_id))
+              assert(_.isArray(debt_offer.borrower_ids))
+            })
+        })
+        .then(function () { return User.destroy({id:_user.id}) })
+        .then(function () { return DebtOffer.destroy({id:_debt_offer.id}) })
+        .then(function () { done() })
+    })
+
     it('should return debtoffers except mine', function (done) {
       var _debt_offer
       var _debt_offer2
