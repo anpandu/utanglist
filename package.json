@@ -5,6 +5,7 @@
   "description": "UtangList is a webservice for project for Mandiri-IBM Hackathon 2016",
   "keywords": [],
   "dependencies": {
+    "axios": "^0.9.1",
     "bluebird": "^2.9.30",
     "ejs": "~0.8.4",
     "fbgraph": "^1.1.0",
