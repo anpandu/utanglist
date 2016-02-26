@@ -41,6 +41,7 @@ module.exports.routes = {
   'get /user/autocomplete': 'UserController.autocomplete',
 
 
+  'get /debt': 'DebtController.getAllDebtByToken',
   'get /debt/lend': 'DebtController.lendedDebtsByUser',
   'get /debt/borrow': 'DebtController.borrowedDebtsByUser',
   'post /debt/add': 'DebtController.add',
@@ -54,7 +55,7 @@ module.exports.routes = {
 
   'get /debtdemand/feed': 'DebtDemandController.feed',
   'patch /debtdemand/:id/request': 'DebtDemandController.request',
-  
+
   'patch /debt_offer/:id/request': 'DebtOfferController.request',
   'patch /debt_offer/:id/accept': 'DebtOfferController.accept',
   'patch /debt_offer/feed': 'DebtOfferController.feed'
