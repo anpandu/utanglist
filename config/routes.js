@@ -50,6 +50,8 @@ module.exports.routes = {
   'patch /payment/:id/approve': 'PaymentController.approve',
   'patch /payment/:id/reject': 'PaymentController.reject',
 
+  'get /debtdemand/feed': 'DebtDemandController.feed',
+
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *
