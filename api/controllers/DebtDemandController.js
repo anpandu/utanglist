@@ -29,7 +29,7 @@ module.exports = {
         return DebtDemand
           .findOne({id: debtDemandId})
           .then(function (debtdemand) {
-            debtdemand.lender_ids += [user.user_id]
+            debtdemand.lender_ids.push(user.user_id)
             return debtdemand.save(function (err, s) { res.json(s) }) 
           })
       })
