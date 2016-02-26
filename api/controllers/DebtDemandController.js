@@ -42,11 +42,19 @@ module.exports = {
     User
       .getMe(access_token)
       .then(function (user) {
-        return DebtDemand
-          .find({borrower_id:{'!':[user.user_id]}})
+        return DebtDemand.find({borrower_id:{'!':[user.user_id]}})
       })
       .then(function (debt_demands) {
-        return res.send(debt_demands)
+        var proms = debt_demands.map(function (dd) { return User.findOne({user_id: dd.borrower_id}) })
+        return Promise
+          .all(proms)
+          .then(function (users) {
+            debt_demands = debt_demands.map(function (dd, idx) {
+              dd.user = users[idx]
+              return dd
+            })
+            return res.send(debt_demands)
+          })
       })
   },
 
