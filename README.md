@@ -37,3 +37,17 @@ Payment
     patch /payment/:id/reject
     get /payment/ecash_balance_inquiry
 
+DebtOffer
+
+    post /debtoffer
+      total_debt
+      lender_id
+      borrower_ids
+      notes
+    get /debtoffer/:id
+    get /debtoffer/feed
+    patch /debtoffer/:id/request
+      borrower_id
+    patch /debtoffer/:id/accept
+          borrower_id
+
