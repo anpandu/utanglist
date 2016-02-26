@@ -39,7 +39,7 @@ module.exports = {
   // class functions
   getLendedDebtsByUser : function(user_id) {
     return Debt
-      .find({ lender_id: user_id})
+      .find({lender_id: user_id})
       .populate('payments')
       .then(function (debts) {
         var proms = debts

@@ -24,6 +24,14 @@ Payment
     post /payment
       debt
       amount
+    post /payment/ecash_pay
+      debt
+      amount
+      ecash_id
+      ecash_pin
+      device_id
+      destination
+      description
     get /payment/:id
     patch /payment/:id/approve
     patch /payment/:id/reject
