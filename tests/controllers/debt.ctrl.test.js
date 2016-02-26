@@ -2,6 +2,70 @@ describe('DebtController', function() {
 
   var endpoint = '/debt'
 
+  describe('/debt', function() {
+
+    it('return debt by debt id', function (done) {
+      var _debt
+      var _user
+      var _user2
+      Promise.resolve()
+        .then(function () {
+          return User
+            .create({ user_id: '10205506227205118', full_name: 'Ananta Pandu Wicaksana', })
+            .then(function (user) { _user = user; return user})
+        })
+        .then(function () {
+          return User
+            .create({ user_id: '666', full_name: 'satan', })
+            .then(function (user) { _user2 = user; return user})
+        })
+        .then(function () {
+          return Debt.create({
+            total_debt: '5000',
+            current_debt: '5000',
+            lender_id: '10205506227205118',
+            borrower_id: '666',
+            notes: 'sold my soul'
+          })
+          .then(function (debt) { _debt = debt; return debt})
+        })
+        .then(function () {
+          return request(sails.hooks.http.app)
+            .get(endpoint+'/'+_debt.id)
+            .set('Content-Type', 'application/json')
+            .set('Authorization', _user.getToken())
+            .expect(function(res) {
+              var debt = res.body
+              assert(_.isObject(debt))
+              assert(_.isEqual(debt.id, _debt.id))
+              assert(_.isObject(debt.user))
+              assert(_.isEqual(debt.user.id, _user.id))
+            })
+        })
+        .then(function (res) { return Debt.destroy({id:_debt.id}) })
+        .then(function () { return User.destroy({id:_user.id}) })
+        .then(function () { return User.destroy({id:_user2.id}) })
+        .then(function () { done() })
+    })
+
+    it('return 403 if token error', function (done) {
+      var _debt
+      var _user
+      var _user2
+      Promise.resolve()
+        .then(function () {
+          return request(sails.hooks.http.app)
+            .get(endpoint+'/lend')
+            .set('Content-Type', 'application/json')
+            .set('Authorization', 'XXXXXXX')
+            .expect(function(res) {
+              assert(403 == res.status)
+            })
+        })
+        .then(function () { done() })
+    })
+  })
+
   describe('/debt/lend', function() {
 
     it('return debt by lender_id', function (done) {

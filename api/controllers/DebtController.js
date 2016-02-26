@@ -67,6 +67,21 @@ module.exports = {
         debt.save()
         return res.json(debt)
       })
-  }
+  },
+
+  customGetDebt : function(req, res) {
+    var access_token = req.header('Authorization')
+    var debtId = req.param('id')
+    User
+      .getMe(access_token)
+      .then(function (user) {
+        return Debt
+          .findOne({id:debtId})
+          .then(function (debt) {
+            debt.user = user
+            return res.json(debt)
+          })
+      })
+  },
 
 }
