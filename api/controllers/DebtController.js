@@ -20,9 +20,19 @@ module.exports = {
         .then(function (user) {
           Debt
             .getLendedDebtsByUser(user.user_id)
-            .then(function (debt){
-              return res.json(debt)
+            .then(function (debts){
+              var proms = debts.map(function (dd) { return User.findOne({user_id: dd.borrower_id}) })
+              return Promise
+                .all(proms)
+                .then(function (users) {
+                  debts = debts.map(function (dd, idx) {
+                    dd.user = users[idx]
+                    return dd
+                  })
+                  return res.send(debts)
+                })
             })
+            
         })
   },
 
@@ -33,8 +43,17 @@ module.exports = {
         .then(function (user) {
           Debt
             .getBorrowedDebtsByUser(user.user_id)
-            .then(function (debt){
-              return res.json(debt)
+            .then(function (debts){
+              var proms = debts.map(function (dd) { return User.findOne({user_id: dd.lender_id}) })
+              return Promise
+                .all(proms)
+                .then(function (users) {
+                  debts = debts.map(function (dd, idx) {
+                    dd.user = users[idx]
+                    return dd
+                  })
+                  return res.send(debts)
+                })
             })
             .catch(console.log)
         })
